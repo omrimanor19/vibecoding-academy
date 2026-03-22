@@ -1,0 +1,106 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# codex-finish-worktree
+#
+# Codex-specific helper for cleaning up an already-merged git worktree.
+# Run this after the PR for the branch has been merged.
+#
+# Usage:
+#   scripts/codex-finish-worktree <worktree-name>
+#
+# Example:
+#   scripts/codex-finish-worktree landing-page
+#
+# Recommended workflow:
+#   1. Use scripts/codex-start-worktree <name>
+#   2. Work, commit, and push from the worktree
+#   3. Open and merge the PR
+#   4. Run scripts/codex-finish-worktree <name>
+#
+# What it does:
+#   1. Updates local main from origin/main unless skipped
+#   2. Verifies branch <worktree-name> is merged into main
+#   3. Removes .worktrees/<worktree-name>
+#   4. Deletes the local branch
+#   5. Best-effort deletes origin/<worktree-name>
+#
+# Test mode:
+#   Set CODEX_FINISH_WORKTREE_SKIP_PULL=1 to skip pulling origin/main.
+
+usage() {
+  echo "Usage: $0 <worktree-name>" >&2
+}
+
+if [ "$#" -ne 1 ]; then
+  usage
+  exit 1
+fi
+
+NAME="$1"
+
+if [ -z "$NAME" ]; then
+  usage
+  exit 1
+fi
+
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || {
+  echo "Error: run this script from inside a git repository." >&2
+  exit 1
+}
+
+cd "$REPO_ROOT"
+
+WORKTREE_DIR=".worktrees/$NAME"
+WORKTREE_PATH="$REPO_ROOT/$WORKTREE_DIR"
+BRANCH_NAME="$NAME"
+CURRENT_BRANCH="$(git branch --show-current)"
+
+if [ "$CURRENT_BRANCH" != "main" ]; then
+  echo "Error: run this script from the main checkout on branch 'main'." >&2
+  exit 1
+fi
+
+if [ ! -d "$WORKTREE_PATH" ]; then
+  echo "Error: worktree does not exist: $WORKTREE_PATH" >&2
+  exit 1
+fi
+
+if ! git show-ref --verify --quiet "refs/heads/$BRANCH_NAME"; then
+  echo "Error: local branch '$BRANCH_NAME' does not exist." >&2
+  exit 1
+fi
+
+if [ "${CODEX_FINISH_WORKTREE_SKIP_PULL:-0}" != "1" ]; then
+  git pull --ff-only origin main
+fi
+
+if ! git merge-base --is-ancestor "$BRANCH_NAME" main; then
+  echo "Error: branch '$BRANCH_NAME' is not merged into main." >&2
+  echo "Merge the PR first, then run this script." >&2
+  exit 1
+fi
+
+git worktree remove "$WORKTREE_DIR"
+echo "Removed worktree $WORKTREE_PATH"
+
+git branch -d "$BRANCH_NAME"
+echo "Deleted local branch $BRANCH_NAME"
+
+if git ls-remote --exit-code --heads origin "$BRANCH_NAME" >/dev/null 2>&1; then
+  REMOTE_OUTPUT="$(git push origin --delete "$BRANCH_NAME" 2>&1)" || {
+    if printf '%s' "$REMOTE_OUTPUT" | grep -Eq "remote ref does not exist|not found|unable to delete"; then
+      echo "Remote branch origin/$BRANCH_NAME was already gone."
+      exit 0
+    fi
+
+    echo "$REMOTE_OUTPUT" >&2
+    echo "Warning: local cleanup succeeded, but remote branch deletion failed." >&2
+    exit 1
+  }
+
+  echo "Deleted remote branch origin/$BRANCH_NAME"
+else
+  echo "Remote branch origin/$BRANCH_NAME was already gone."
+fi
