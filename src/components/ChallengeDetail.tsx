@@ -28,72 +28,105 @@ export function ChallengeDetail({ challenge, onBack }: ChallengeDetailProps) {
           Back to Challenges
         </Button>
 
+        {/* THE BRIEF */}
         <header className="mb-12">
-          <div className="mb-4">
+          <div className="mb-4 flex flex-wrap items-center gap-3">
             <Badge tone={challenge.level}>{challenge.levelLabel}</Badge>
+            <span className="text-sm text-slate-500">{challenge.time}</span>
+            <span className="text-sm text-slate-400">|</span>
+            <span className="text-sm text-slate-500">Tool: {detail.tool}</span>
           </div>
 
           <h1 className="text-balance text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
             {challenge.title}
           </h1>
-          <p className="mt-4 text-lg text-slate-600 sm:text-xl">
-            {challenge.time} • Beginner-friendly
-          </p>
+
+          <div className="detail-callout detail-callout-info mt-6">
+            <p className="text-slate-800">{detail.summary}</p>
+          </div>
         </header>
 
-        <div className="detail-callout detail-callout-info mb-12">
-          <p className="text-slate-800">{detail.summary}</p>
-        </div>
-
-        <div className="space-y-12">
+        <div className="space-y-14">
+          {/* THE RECIPE */}
           <section>
-            <h2 className="detail-heading">What You&apos;ll Build</h2>
-            <p className="detail-copy">{detail.outcome}</p>
-          </section>
+            <h2 className="detail-heading">The Recipe</h2>
+            <p className="detail-copy mb-6 text-sm text-slate-500">
+              Follow each step in order. Copy the prompt, fill in your own details, and paste it into Lovable.
+            </p>
 
-          <section>
-            <h2 className="detail-heading">Step-by-Step Guide</h2>
+            {/* Step progress bar */}
+            <div className="mb-8 flex gap-2">
+              {detail.recipe.map((_, i) => (
+                <div
+                  key={i}
+                  className="h-1.5 flex-1 rounded-full bg-sky-200"
+                />
+              ))}
+            </div>
+
             <div className="space-y-6">
-              {detail.steps.map((step) => (
-                <div key={step.title} className="surface-card surface-card-muted">
-                  <h3 className="mb-2 text-lg font-bold text-slate-900">{step.title}</h3>
-                  <p className="mb-3 text-slate-700">{step.description}</p>
-                  <p className="text-sm text-slate-600">
-                    Prompt tip: &quot;{step.promptTip}&quot;
-                  </p>
+              {detail.recipe.map((step, i) => (
+                <div key={step.title} className="surface-card-muted">
+                  <div className="mb-3 flex items-center gap-3">
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-sky-600 text-sm font-bold text-white">
+                      {i + 1}
+                    </span>
+                    <span className="text-xs font-semibold uppercase tracking-widest text-sky-600">
+                      Step {i + 1} of {detail.recipe.length}
+                    </span>
+                  </div>
+
+                  <h3 className="mb-4 text-lg font-bold text-slate-900">{step.title}</h3>
+
+                  {/* Prompt block */}
+                  <div className="mb-4 rounded-xl bg-slate-900 p-4">
+                    <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
+                      Your prompt
+                    </p>
+                    <p className="font-mono text-sm leading-relaxed text-emerald-300">{step.prompt}</p>
+                  </div>
+
+                  {/* Tip */}
+                  <div className="flex gap-2 rounded-xl border border-amber-200 bg-amber-50 p-4">
+                    <span className="text-base">💡</span>
+                    <p className="text-sm leading-relaxed text-amber-800">{step.tip}</p>
+                  </div>
                 </div>
               ))}
             </div>
           </section>
 
+          {/* THE STRETCH */}
           <section>
-            <h2 className="detail-heading">Tips & Tricks</h2>
-            <ul className="space-y-3 text-slate-700">
-              {detail.tips.map((tip) => (
-                <li key={tip} className="flex gap-3">
-                  <span className="font-bold text-sky-600">•</span>
-                  <span>{tip}</span>
+            <h2 className="detail-heading">The Stretch</h2>
+            <p className="detail-copy mb-4 text-sm text-slate-500">
+              Finished early? Try one of these optional add-ons.
+            </p>
+            <ul className="space-y-3">
+              {detail.stretch.map((item) => (
+                <li key={item} className="flex items-start gap-3 text-slate-700">
+                  <span className="mt-0.5 text-sky-500">+</span>
+                  <span>{item}</span>
                 </li>
               ))}
             </ul>
           </section>
 
+          {/* FREESTYLE */}
           <section>
-            <h2 className="detail-heading">Success Checklist</h2>
-            <div className="space-y-3">
-              {detail.checklist.map((item) => (
-                <label key={item} className="flex cursor-pointer items-center gap-3">
-                  <input type="checkbox" className="h-5 w-5 rounded border-slate-300 text-sky-600" />
-                  <span className="text-slate-700">{item}</span>
-                </label>
-              ))}
+            <div className="detail-callout detail-callout-info">
+              <h2 className="mb-2 text-xl font-bold text-slate-900">Freestyle</h2>
+              <p className="text-slate-700">{detail.freestyle}</p>
             </div>
           </section>
 
-          <div className="detail-callout detail-callout-success">
-            <h3 className="mb-2 font-bold text-slate-900">{detail.closingTitle}</h3>
-            <p className="text-slate-700">{detail.closingMessage}</p>
-          </div>
+          {/* SHOW & TELL */}
+          <section>
+            <div className="detail-callout detail-callout-success">
+              <h2 className="mb-2 text-xl font-bold text-slate-900">Show &amp; Tell</h2>
+              <p className="text-slate-700">{detail.showAndTell}</p>
+            </div>
+          </section>
         </div>
       </Container>
     </div>

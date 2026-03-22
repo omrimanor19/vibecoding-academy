@@ -1,19 +1,18 @@
 export type ChallengeLevel = 'beginner' | 'intermediate' | 'advanced';
 
-export interface ChallengeStep {
+export interface RecipeStep {
   title: string;
-  description: string;
-  promptTip: string;
+  prompt: string;
+  tip: string;
 }
 
 export interface ChallengeDetailContent {
+  tool: string;
   summary: string;
-  outcome: string;
-  steps: ChallengeStep[];
-  tips: string[];
-  checklist: string[];
-  closingTitle: string;
-  closingMessage: string;
+  recipe: RecipeStep[];
+  stretch: string[];
+  freestyle: string;
+  showAndTell: string;
 }
 
 export interface Challenge {
@@ -67,55 +66,44 @@ export const challenges: Challenge[] = [
     available: true,
     featured: true,
     detail: {
+      tool: 'Lovable (free)',
       summary:
-        "Your personal landing page is your digital front door. In this challenge, you'll build a page that shows who you are, what you're interested in, and how people can reach you.",
-      outcome:
-        "A clean, modern homepage with your name, a short bio, links to your projects or socials, and a simple way for people to contact you.",
-      steps: [
+        'Build a personal homepage that introduces you to the world. Your name, a short bio, your interests, and links to your socials. Your corner of the internet.',
+      recipe: [
         {
-          title: 'Step 1: Set Up Your Structure',
-          description:
-            'Start with a clean HTML base. You need a header section with your name, a bio section, and a footer with contact links.',
-          promptTip:
-            'Create a simple HTML structure for a personal landing page with a header, hero section with my name and bio, and a footer.',
+          title: 'Start with the big picture',
+          prompt:
+            'Build me a personal landing page. I want my name [YOUR NAME] as a big headline, a short bio section, a list of my interests, and links to my social media. Modern and clean, dark background, bright accent colors.',
+          tip: 'Give the AI the full picture in your first prompt -- what it is, what\'s in it, how it looks. Fewer round trips = better results.',
         },
         {
-          title: 'Step 2: Style It to Look Good',
-          description:
-            'Add CSS to make it look modern and clean. Think about colors, fonts, spacing, and how it looks on phones too.',
-          promptTip:
-            'Add CSS to make this page look modern and professional. Use a clear color scheme and make sure it is responsive on mobile.',
+          title: 'Make it yours',
+          prompt:
+            'Change the bio to: [your 2-3 sentences]. Update interests to: [your list]. Add links to my [your socials].',
+          tip: 'AI scaffolds fast, but you fill in what makes it yours. Replace placeholder content early.',
         },
         {
-          title: 'Step 3: Add Your Content',
-          description:
-            'Fill in your name, write a short bio about yourself, add links to your socials or projects, and include your email or contact form.',
-          promptTip:
-            'Help me write a compelling 2 to 3 sentence bio about myself as a high school student interested in coding and tech.',
+          title: 'Level up the design',
+          prompt:
+            "Add a fade-in animation on the headline. Add a 'What I'm Working On' section at the bottom with 2-3 bullet points.",
+          tip: "Rough draft first, then layer in polish. That's how real building works.",
         },
         {
-          title: 'Step 4: Deploy It',
-          description:
-            'Get your page live on the internet. Use a free hosting service so you can share it with anyone.',
-          promptTip: 'How do I deploy this HTML and CSS page to the internet for free?',
+          title: 'Ship it',
+          prompt: 'Make sure it looks good on mobile. Fix any spacing issues.',
+          tip: 'The last step is always polish. This is the difference between a project and a product.',
         },
       ],
-      tips: [
-        "Keep it simple. You do not need fancy effects to look professional.",
-        'Use plenty of white space. It makes your page easier to read.',
-        'Make sure your links work and your contact info is correct before sharing.',
-        'Test it on your phone. A lot of people will see it on mobile first.',
+      stretch: [
+        'Add dark mode / light mode toggle',
+        'Include a photo or avatar',
+        'Add a "Contact Me" form',
+        'Custom cursor or hover effects',
       ],
-      checklist: [
-        'Your name is prominently displayed',
-        'You have a bio or about section',
-        'It has at least one call to action',
-        'It looks good on mobile',
-        'You have deployed it and have a live URL',
-      ],
-      closingTitle: 'Ready to ship?',
-      closingMessage:
-        'Once your page is live, share it with the Vibe Coding community. You just built your first real project.',
+      freestyle:
+        "Add something that's totally your idea. A feature, a section, a whole new vibe. This is where you stop following the recipe and start cooking.",
+      showAndTell:
+        'Share what you built. Reflect: What was easier than expected? What surprised you? If you had another hour, what would you add?',
     },
   },
   {
