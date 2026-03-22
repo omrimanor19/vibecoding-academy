@@ -1,3 +1,119 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply m-0 bg-white font-sans text-slate-900 antialiased;
+  }
+
+  #root {
+    @apply min-h-screen;
+  }
+}
+
+@layer components {
+  .app-section {
+    @apply px-4 py-20 sm:px-6;
+  }
+
+  .app-container {
+    @apply mx-auto w-full max-w-6xl;
+  }
+
+  .app-container-narrow {
+    @apply max-w-3xl;
+  }
+
+  .section-title {
+    @apply mb-6 text-4xl font-bold tracking-tight text-slate-900;
+  }
+
+  .section-copy {
+    @apply mb-6 text-xl leading-relaxed text-slate-700;
+  }
+
+  .surface-card {
+    @apply rounded-3xl border border-slate-100 bg-white p-8 shadow-md transition-all duration-300;
+  }
+
+  .surface-card-interactive {
+    @apply cursor-pointer border-2 border-transparent shadow-lg hover:-translate-y-1 hover:border-cyan-400 hover:shadow-2xl;
+  }
+
+  .surface-card-muted {
+    @apply rounded-2xl bg-slate-50 p-6;
+  }
+
+  .card-highlight {
+    @apply pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-r from-cyan-500 via-sky-500 to-violet-500 opacity-0 transition-opacity;
+  }
+
+  .surface-card-interactive:hover .card-highlight {
+    @apply opacity-5;
+  }
+
+  .ui-button {
+    @apply inline-flex items-center justify-center rounded-xl font-semibold transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .ui-button-primary {
+    @apply bg-gradient-to-r from-cyan-500 to-blue-600 text-white hover:scale-[1.02] hover:from-cyan-400 hover:to-blue-500;
+  }
+
+  .ui-button-secondary {
+    @apply bg-slate-200 text-slate-500;
+  }
+
+  .ui-button-ghost {
+    @apply bg-transparent text-slate-700 hover:bg-slate-100;
+  }
+
+  .ui-badge {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold;
+  }
+
+  .ui-badge-beginner {
+    @apply bg-emerald-100 text-emerald-800;
+  }
+
+  .ui-badge-intermediate {
+    @apply bg-sky-100 text-sky-800;
+  }
+
+  .ui-badge-advanced {
+    @apply bg-violet-100 text-violet-800;
+  }
+
+  .ui-badge-featured {
+    @apply bg-gradient-to-r from-cyan-500 to-blue-600 text-white;
+  }
+
+  .detail-heading {
+    @apply mb-4 text-2xl font-bold text-slate-900;
+  }
+
+  .detail-copy {
+    @apply leading-relaxed text-slate-700;
+  }
+
+  .detail-callout {
+    @apply rounded-2xl border-l-4 p-6;
+  }
+
+  .detail-callout-info {
+    @apply border-sky-600 bg-sky-50;
+  }
+
+  .detail-callout-success {
+    @apply border-emerald-600 bg-emerald-50;
+  }
+}

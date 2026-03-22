@@ -1,22 +1,49 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Hero } from './components/Hero';
 import { HowItWorks } from './components/HowItWorks';
 import { ChallengeGrid } from './components/ChallengeGrid';
 import { About } from './components/About';
 import { Footer } from './components/Footer';
 import { ChallengeDetail } from './components/ChallengeDetail';
+import { getChallengeById } from './data/challenges';
+import {
+  getChallengeIdFromHash,
+  goHome,
+  goToChallenge,
+} from './lib/navigation';
 
 function App() {
-  const [activeChallengeId, setActiveChallengeId] = useState<string | null>(null);
+  const [activeChallengeId, setActiveChallengeId] = useState<string | null>(() =>
+    getChallengeIdFromHash(window.location.hash)
+  );
+
+  useEffect(() => {
+    const syncRoute = () => {
+      setActiveChallengeId(getChallengeIdFromHash(window.location.hash));
+      window.scrollTo(0, 0);
+    };
+
+    if (!window.location.hash) {
+      goHome();
+    }
+
+    window.addEventListener('hashchange', syncRoute);
+    return () => window.removeEventListener('hashchange', syncRoute);
+  }, []);
+
+  const activeChallenge = getChallengeById(activeChallengeId);
 
   const handleStartChallenge = (id: string) => {
-    setActiveChallengeId(id);
-    window.scrollTo(0, 0);
+    goToChallenge(id);
   };
 
   const handleBackToMain = () => {
-    setActiveChallengeId(null);
-    window.scrollTo(0, 0);
+    if (window.history.length > 1 && activeChallengeId) {
+      window.history.back();
+      return;
+    }
+
+    goHome();
   };
 
   const handleHeroCTA = () => {
@@ -26,8 +53,8 @@ function App() {
     }
   };
 
-  if (activeChallengeId) {
-    return <ChallengeDetail onBack={handleBackToMain} />;
+  if (activeChallenge) {
+    return <ChallengeDetail challenge={activeChallenge} onBack={handleBackToMain} />;
   }
 
   return (

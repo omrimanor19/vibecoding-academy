@@ -1,10 +1,12 @@
+import { Container } from './ui/Container';
+
 export function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300 py-8 px-4">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between">
-        <p className="text-sm mb-4 md:mb-0">Built with AI by Omri</p>
+    <footer className="bg-slate-950 px-4 py-8 text-slate-300">
+      <Container className="flex flex-col items-center justify-between gap-4 md:flex-row">
+        <p className="text-sm">Built with AI by Omri</p>
         <p className="text-sm">More challenges coming soon</p>
-      </div>
+      </Container>
     </footer>
   );
 }
