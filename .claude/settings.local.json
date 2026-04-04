@@ -11,7 +11,9 @@
       "Bash(npm run:*)",
       "mcp__chrome-devtools__list_pages",
       "mcp__chrome-devtools__navigate_page",
-      "mcp__chrome-devtools__take_screenshot"
+      "mcp__chrome-devtools__take_screenshot",
+      "Bash(git pull:*)",
+      "Bash(git stash:*)"
     ]
   }
 }

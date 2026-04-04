@@ -30,6 +30,10 @@ export function ChallengeGrid({ onStartChallenge }: ChallengeGridProps) {
                 {level.heading}
               </h3>
 
+              {level.description && (
+                <p className="mb-6 -mt-2 text-slate-500">{level.description}</p>
+              )}
+
               <div className="grid gap-6 md:grid-cols-3">
                 {levelChallenges.map((challenge) => (
                   <ChallengeCard

@@ -42,7 +42,7 @@ Build "Vibe Coding Academy" -- a single-page site for high schoolers.
 
 HERO:
 - Headline: "Build real apps. No code required."
-- Subheading: "Learn to use AI to create websites, games, and tools -- one challenge at a time."
+- Subheading: "Learn to use AI to create websites, games, and tools, one challenge at a time."
 - CTA button: "Try Your First Challenge" (scrolls to challenge section)
 
 HOW IT WORKS (3 cards with icons):
