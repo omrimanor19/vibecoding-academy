@@ -4,6 +4,8 @@ import { Badge } from './ui/Badge';
 import { Button } from './ui/Button';
 import { Container } from './ui/Container';
 import { AhaMoment } from './ui/AhaMoment';
+import { PromptTip } from './ui/PromptTip';
+import { TermChip } from './ui/TermChip';
 import { ShowAndTell } from './ShowAndTell';
 
 interface ChallengeDetailProps {
@@ -86,25 +88,20 @@ export function ChallengeDetail({ challenge, onBack }: ChallengeDetailProps) {
                 <div key={step.title} className="surface-card surface-card-muted">
                   <h3 className="mb-2 text-lg font-bold text-slate-900">{step.title}</h3>
                   <p className="mb-3 text-slate-700">{step.description}</p>
-                  {step.promptTip && (
-                    <p className="text-sm text-slate-600">
-                      Prompt tip: &quot;{step.promptTip}&quot;
-                    </p>
-                  )}
+                  {step.promptTip && <PromptTip text={step.promptTip} />}
                   {step.terms && Object.keys(step.terms).length > 0 && (
                     <div className="mt-3 flex flex-wrap gap-2">
                       {Object.entries(step.terms).map(([term, definition]) => (
-                        <span
-                          key={term}
-                          className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-500"
-                        >
-                          <span>💡</span>
-                          <span className="text-slate-400">What is</span>
-                          <span className="font-semibold text-slate-700">{term}?</span>
-                          <span className="text-slate-300">—</span>
-                          {definition}
-                        </span>
+                        <TermChip key={term} term={term} definition={definition} />
                       ))}
+                    </div>
+                  )}
+                  {step.ahaMoment && (
+                    <div className="mt-6">
+                      <AhaMoment
+                        front={step.ahaMoment.front}
+                        back={step.ahaMoment.back}
+                      />
                     </div>
                   )}
                 </div>

@@ -5,6 +5,7 @@ export interface ChallengeStep {
   description: string;
   promptTip?: string;
   terms?: Record<string, string>;
+  ahaMoment?: AhaMomentContent;
 }
 
 export interface SetupStep {
@@ -365,7 +366,72 @@ export const challenges: Challenge[] = [
     levelLabel: 'Quick Win',
     time: '15 min',
     description: 'Stylish countdown to any event',
-    available: false,
+    available: true,
+    detail: {
+      summary:
+        "A countdown timer is one of the most satisfying things you can build because you actually use it. Set it to your birthday, graduation, summer break, or a concert you're waiting for. Every time you open the page, it shows exactly how many days, hours, minutes, and seconds are left. By the end you'll have a live, shareable countdown page of your own.",
+      outcome:
+        "A live countdown timer to any event you choose, showing days, hours, minutes, and seconds ticking down in real time. Styled to look sharp and ready to share.",
+      setup: {
+        intro:
+          "Before you start, let's get you set up in Lovable. If you've done this before, skim through. If it's your first time, follow each step.",
+        steps: [
+          ...lovableSetupSteps,
+          {
+            instruction: 'Start a new project for this challenge. Do not continue from a previous one.',
+          },
+        ],
+        ahaMoment: {
+          front: "How does a countdown update every second without you clicking anything?",
+          back: "When you build a countdown, you write code that says: check what time it is right now, calculate the difference, then do it again in exactly one second. Computers can repeat instructions like that forever without stopping. Once you set it up, the page handles itself. This is how live scoreboards, sports scores, and anything that updates automatically actually works.",
+        },
+      },
+      steps: [
+        {
+          title: 'Step 1: Build the Countdown',
+          description:
+            "Tell Lovable to build a countdown timer. Give it a target date and describe the four numbers you want to see: days, hours, minutes, and seconds. Lovable will wire up all the logic that keeps it ticking.",
+          promptTip:
+            'Build a countdown timer that counts down to [a date you care about, like your graduation or a concert]. Show four numbers: days, hours, minutes, and seconds remaining. Update them automatically every second.',
+          terms: {
+            'target date': 'the future moment the timer is counting down to',
+          },
+        },
+        {
+          title: 'Step 2: Make It Yours',
+          description:
+            "Replace the placeholder event name and date with something real. It could be the last day of school, your birthday, a game release you are waiting for, or literally anything in the future. The more personal it is, the more you will want to share it.",
+        },
+        {
+          title: 'Step 3: Style It',
+          description:
+            "Make the design match the energy of the event. A graduation countdown can feel clean and official. A concert countdown can go bold and colorful. A summer break countdown can be bright and fun. Tell Lovable the vibe you are going for.",
+          promptTip:
+            'Style this countdown to feel like [describe the mood or event]. Use big, bold numbers and a background that matches the vibe.',
+        },
+        {
+          title: 'Step 4: Publish It',
+          description:
+            'Click the Publish button in Lovable. You will get a live URL you can share with anyone who is counting down to the same thing.',
+        },
+      ],
+      tips: [
+        'Use a date that is actually in the future — if the date has already passed, the timer will show zeroes.',
+        'Big numbers hit harder. Use a large, bold font so the countdown feels dramatic.',
+        'Test it on your phone before sharing. Countdowns look especially good on mobile.',
+        'Ask Lovable to add a message for when the timer reaches zero, so it does not just go blank.',
+      ],
+      checklist: [
+        'The timer shows days, hours, minutes, and seconds',
+        'The event name is yours, not placeholder text',
+        'The numbers update automatically every second without you doing anything',
+        'It looks good on mobile',
+        'You have a live URL to share',
+      ],
+      closingTitle: "Time's ticking.",
+      closingMessage:
+        "Share the link and let people watch it count down with you. You built something that runs on its own.",
+    },
   },
   {
     id: 'weather-dashboard',
@@ -374,7 +440,113 @@ export const challenges: Challenge[] = [
     levelLabel: 'Real Project',
     time: '1 hr',
     description: 'Look up weather for any city',
-    available: false,
+    available: true,
+    detail: {
+      summary:
+        "This challenge introduces something no Level 1 project does: connecting to real data from the internet. You will build a weather app where someone types any city in the world and sees the actual current conditions pulled live from a weather service. By the end you will understand how almost every real app works: not because it knows everything, but because it knows who to ask.",
+      outcome:
+        "A live weather dashboard where you can search any city and see real-time temperature, conditions, humidity, and wind speed. A real app that connects to the internet, not just a page that shows things.",
+      setup: {
+        intro:
+          "Before you can build a weather app, you need a source of weather data. Lovable can build you the interface, but it cannot invent weather data; it needs to ask a weather service for that. The connection between your app and that service is called an API. Getting one set up takes about 5 minutes and unlocks a skill you will use in almost every real project from here on.",
+        steps: [
+          {
+            instruction: 'Go to openweathermap.org and create a free account.',
+            note: 'You can sign up with Google or email. The free tier gives you 1,000 API calls per day, which is more than enough.',
+          },
+          {
+            instruction: 'After signing in, click your username in the top right and select "My API Keys."',
+          },
+          {
+            instruction: 'You will see a key already generated called "Default." Click the copy icon next to it.',
+            note: 'If it says "pending" instead of showing a key, wait a few minutes and refresh. New API keys take a little time to activate.',
+          },
+          {
+            instruction: 'Paste the key somewhere safe (a notes app, a sticky note, anywhere). You will need it in Step 2.',
+          },
+          {
+            instruction: 'Go to lovable.dev and start a new project for this challenge. Do not continue from a previous one.',
+          },
+        ],
+        ahaMoment: {
+          front: "How does an app like yours know what the weather is, right now, anywhere in the world?",
+          back: "It doesn't know. It asks. OpenWeatherMap has weather stations feeding data into their system around the clock. Your app sends a request: 'What's the weather in Tokyo?' They send back an answer: temperature, conditions, humidity. That back-and-forth is an API. The API key is like your app's ID badge; it proves you are authorized to ask. Once you know how to use one API, you can use almost any of them. Google Maps, Spotify, NASA. All of it works the same way.",
+        },
+      },
+      steps: [
+        {
+          title: 'Step 1: Build the Search Interface',
+          description:
+            'Start by building the part the user actually sees: a text box to type a city name, a search button, and a results area below where the weather will show up. You are building the shell first, before you connect any real data. This makes it easier to get the layout right.',
+          promptTip:
+            'Build a weather dashboard with a text input where I can type a city name, a search button, and a results area below that will show the weather details. No real data yet, just the layout.',
+          terms: {
+            UI: 'the visible part of an app that users interact with: buttons, inputs, and displays',
+          },
+        },
+        {
+          title: 'Step 2: Connect to Real Weather Data',
+          description:
+            "Now you wire up your app to a live weather service. Paste your API key from the setup step into the prompt below. When this step works, you will type a city and see real conditions come back from the internet. That is the moment it stops being a mock and becomes a real app.",
+          promptTip:
+            'Connect this app to the OpenWeatherMap Current Weather API. My API key is [paste your key here]. When the user searches a city, fetch the current weather and display the city name, temperature in Fahrenheit, and a short description of the conditions like "Clear sky" or "Light rain."',
+          terms: {
+            'API key': 'a unique code that proves your app is authorized to use a service',
+            fetch: 'to request and receive data from another service on the internet',
+          },
+        },
+        {
+          title: 'Step 3: Add More Weather Details',
+          description:
+            'Temperature and conditions are a start, but a useful weather app tells you more. Add humidity and wind speed so the dashboard actually gives you the full picture. These are already in the data coming back from the API; Lovable just needs to know to show them.',
+          promptTip:
+            'Add humidity percentage and wind speed in mph to the weather display.',
+        },
+        {
+          title: 'Step 4: Handle Bad City Names',
+          description:
+            "What happens if someone types a city that doesn't exist, or makes a typo? Right now the app might go blank or show a raw error. Tell Lovable to catch that and show a helpful message instead. This is what separates a polished app from a broken one.",
+          promptTip:
+            'If the city is not found or the request fails, show a friendly message like "City not found. Try a different name." instead of showing an error or going blank.',
+          terms: {
+            'error handling': "code that catches when something goes wrong and shows a helpful message instead of breaking",
+          },
+          ahaMoment: {
+            front: "What should happen when your app gets something it didn't expect?",
+            back: "Most beginners only think about the happy path: the user types a city, the weather shows up. But real users type nothing, misspell cities, and lose their internet connection. How your app handles those moments matters just as much as how it handles the easy ones. A clear, friendly message keeps the user in control. A blank screen or a raw error code sends them away. Thinking about what can go wrong before it does is one of the things that separates a finished app from a prototype.",
+          },
+        },
+        {
+          title: 'Step 5: Style It Like a Real Weather App',
+          description:
+            'Weather apps have a distinct look: clean backgrounds, big temperature numbers, simple icons. Tell Lovable what vibe you are going for, or describe a real weather app you like the look of. If you want a weather icon that changes based on conditions, ask for it.',
+          promptTip:
+            'Style this to look like a modern weather app. Clean background, big bold temperature number, a weather icon or emoji that reflects the current conditions, and a simple layout.',
+        },
+        {
+          title: 'Step 6: Publish It',
+          description:
+            'Try searching a few cities first to make sure everything is working, including a city that does not exist, to test your error message. Then click the Publish button in Lovable. You will get a live URL you can share with anyone.',
+        },
+      ],
+      tips: [
+        'If your API key shows "invalid" or "unauthorized" at first, wait 10-15 minutes and try again. New OpenWeatherMap keys take time to activate.',
+        'Search by full city name. "New York" works better than "NYC." For cities that share names, you can add the country like "Paris, FR."',
+        'Test a few edge cases before sharing: a city with spaces, a city in another country, and a name that doesn\'t exist. Your app should handle all of them.',
+        'Ask Lovable to add a Celsius toggle if you want to practice adding a feature on your own.',
+      ],
+      checklist: [
+        'You can search any city and see real, live weather data',
+        'The display shows temperature, conditions, humidity, and wind speed',
+        'Searching a city that doesn\'t exist shows a friendly message, not a broken screen',
+        'It looks clean and polished',
+        'You tested it with at least three different cities',
+        'You have a live URL to share',
+      ],
+      closingTitle: 'Your first real API app.',
+      closingMessage:
+        'You just built something that connects to live data from the internet. That is how most of the apps you use every day actually work.',
+    },
   },
   {
     id: 'study-buddy',
@@ -383,7 +555,108 @@ export const challenges: Challenge[] = [
     levelLabel: 'Real Project',
     time: '1.5 hrs',
     description: 'Flashcards that track progress',
-    available: false,
+    available: true,
+    detail: {
+      summary:
+        "This challenge builds something that actually helps you study. You paste in your class notes or a passage from a textbook, and your app uses AI to generate a deck of flashcards from them. Then you study the deck, marking each card as 'got it' or 'still learning,' and your progress saves automatically so you can pick up where you left off. Build it once and you have a study tool you can use for any class, any subject, any time.",
+      outcome:
+        "A flashcard study app where you paste your notes, click generate, and get a custom deck of cards tailored to exactly what you're studying. Work through them, track your progress, and come back later right where you stopped.",
+      setup: {
+        intro:
+          "Before you can build an app that uses AI, you need a way for your app to talk to one. That connection goes through an API key, a private code that lets your app make requests to Google's Gemini AI. Getting one is free and takes about 3 minutes.",
+        steps: [
+          {
+            instruction: 'Go to aistudio.google.com and sign in with your Google account.',
+          },
+          {
+            instruction: 'Click "Get API key" in the left sidebar, then click "Create API key."',
+          },
+          {
+            instruction: 'A key will appear. Click the copy icon next to it.',
+            note: 'Keep this key private. Do not share it publicly or post it anywhere online.',
+          },
+          {
+            instruction: 'Paste the key somewhere safe, like a notes app. You will need it in Step 2.',
+          },
+          {
+            instruction: 'Go to lovable.dev and start a new project for this challenge.',
+          },
+        ],
+        ahaMoment: {
+          front: "You've used AI to chat. But what would it look like if your app used AI as a tool inside it?",
+          back: "That's exactly what you're building. When you paste your notes and click Generate, your app sends them to Gemini with a set of instructions, Gemini writes the flashcards, and your app displays them. You're not just talking to AI. You're building something that uses AI to do a specific job. Once you know how to do that, you can add AI to almost any app you build.",
+        },
+      },
+      steps: [
+        {
+          title: 'Step 1: Build the Input Screen',
+          description:
+            "Start with the part the student sees first: a text area to paste their notes, a way to choose how many flashcards to generate, and a button to kick things off. Build the layout and controls before you connect any real AI. This way you can get the look right without worrying about the logic.",
+          promptTip:
+            'Build a study app with a large text area where I can paste my notes, a dropdown to select how many flashcards to generate (5, 10, or 15), and a Generate Flashcards button. No AI connection yet, just the layout.',
+        },
+        {
+          title: 'Step 2: Connect Gemini to Generate Cards',
+          description:
+            "Now wire up the AI. When the user clicks Generate, your app will send their notes to Gemini with a specific instruction: turn this into flashcard pairs. You need to tell Gemini exactly what format to return the cards in so your app knows how to display them. Paste your API key from the setup step into the prompt below.",
+          promptTip:
+            "Connect this app to the Google Gemini API. My API key is [paste your key here]. When the user clicks Generate Flashcards, send their pasted notes to Gemini with this instruction: Read these notes and generate [selected number] flashcards. Each flashcard should have a question on the front and a short answer on the back. Return them as a JSON array with 'question' and 'answer' fields. Display the generated cards below the input.",
+          terms: {
+            JSON: 'a standard format apps use to pass structured data back and forth',
+            prompt: 'the instruction you give an AI to tell it exactly what to do and what to return',
+          },
+        },
+        {
+          title: 'Step 3: Build the Study Interface',
+          description:
+            "Now build the part where the studying actually happens. Each card should show the question first. When the user clicks it, it flips to reveal the answer. Below each card, two buttons: Got it and Still learning. Clicking either moves to the next card and updates a count of how many are mastered versus remaining.",
+          promptTip:
+            'Add a study mode. Show one flashcard at a time. The card should flip to show the answer when clicked. Below each card, show two buttons: Got it and Still learning. Clicking either moves to the next card. Show a progress counter at the top showing how many cards are mastered versus remaining.',
+          terms: {
+            state: 'the current condition of your app, like which card is showing and which ones are mastered',
+          },
+        },
+        {
+          title: 'Step 4: Save Progress with Local Storage',
+          description:
+            "Right now, if the student closes the tab and comes back, their progress is gone. Fix that by saving it to localStorage, a small storage space built into every browser. Add a Reset button too, so they can start fresh when they want to study again.",
+          promptTip:
+            'Use localStorage to save the current flashcard deck and the user\'s progress (which cards are mastered and which are still learning). When the app loads, check if there\'s a saved deck and restore it. Add a Reset button that clears the saved progress and goes back to the input screen.',
+          terms: {
+            localStorage: 'a small storage space built into every browser that your app can use to save data between visits',
+          },
+          ahaMoment: {
+            front: "If your app can't remember anything, what happens every time someone closes the tab?",
+            back: "It starts from scratch. Every flashcard deck gone, every bit of progress erased. That's the browser's default: it doesn't save anything automatically. localStorage changes that. It's a small notepad built into every browser that your app can write to and read from. No server, no account, no cloud required. Your deck gets written there when you study, and read back when you return. Once you know this exists, you'll find yourself reaching for it in almost every project.",
+          },
+        },
+        {
+          title: 'Step 5: Style It and Publish',
+          description:
+            "Give the app a clean, focused look that doesn't distract from studying. Think calm colors, readable fonts, and a card design that clearly shows which side is the question and which is the answer. When you are happy with it, click Publish.",
+          promptTip:
+            'Style this to look like a focused study app. Calm colors, readable fonts, and a card that looks distinct when flipped to reveal the answer. Keep the layout simple and distraction-free.',
+        },
+      ],
+      tips: [
+        'Paste a paragraph or two, not pages and pages. Short focused notes produce better flashcards than a whole chapter.',
+        'After you generate a deck, read through the cards before studying them. AI gets it right most of the time, but occasionally it misses the point of a sentence.',
+        'Use the Still learning pile aggressively. If you are not 100% sure of the answer, tap Still learning and see it again.',
+        'You can generate a new deck from the same app any time. Build it once, use it all year.',
+        'Test the card flip on your phone before sharing. It should feel snappy, not sluggish.',
+      ],
+      checklist: [
+        'You can paste notes and generate a deck of flashcards from them',
+        'Each card flips to reveal the answer when clicked',
+        'Got it and Still learning buttons move you through the deck and track your progress',
+        'Your deck and progress are still there after you close and reopen the tab',
+        'There is a Reset button to start fresh with new notes',
+        'You have a live URL to share',
+      ],
+      closingTitle: 'Study smarter.',
+      closingMessage:
+        'You just built a study tool that reads your notes and quizzes you on them. Use it for any class, any subject, any time. That is the point of building your own tools.',
+    },
   },
   {
     id: 'split-the-bill',

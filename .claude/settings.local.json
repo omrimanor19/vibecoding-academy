@@ -1,6 +1,8 @@
 {
   "permissions": {
     "allow": [
+      "Edit(*)",
+      "Write(*)",
       "Bash(git init:*)",
       "Bash(git config:*)",
       "Bash(git add:*)",
@@ -13,7 +15,10 @@
       "mcp__chrome-devtools__navigate_page",
       "mcp__chrome-devtools__take_screenshot",
       "Bash(git pull:*)",
-      "Bash(git stash:*)"
+      "Bash(git stash:*)",
+      "Bash(git checkout:*)",
+      "Bash(git push:*)",
+      "Skill(update-config)"
     ]
   }
 }
