@@ -41,8 +41,16 @@ export function ChallengeDetail({ challenge, onBack }: ChallengeDetailProps) {
             {challenge.title}
           </h1>
           <p className="mt-4 text-lg text-slate-600 sm:text-xl">
-            {challenge.time} • Beginner-friendly
+            {challenge.time} • Guided challenge
           </p>
+
+          <div className="mt-8 rounded-2xl border border-sky-100 bg-sky-50/70 p-5 sm:p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sky-700">
+              Core Idea
+            </p>
+            <h2 className="mt-2 text-xl font-bold text-slate-900">{challenge.coreIdea}</h2>
+            <p className="mt-2 text-slate-700">{challenge.coreIdeaBlurb}</p>
+          </div>
         </header>
 
         <div className="space-y-12">

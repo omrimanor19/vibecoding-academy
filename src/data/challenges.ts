@@ -40,6 +40,8 @@ export interface Challenge {
   levelLabel: string;
   time: string;
   description: string;
+  coreIdea: string;
+  coreIdeaBlurb: string;
   available: boolean;
   featured?: boolean;
   detail?: ChallengeDetailContent;
@@ -109,6 +111,9 @@ export const challenges: Challenge[] = [
     levelLabel: 'Quick Win',
     time: '20 min',
     description: 'Build your own personal homepage',
+    coreIdea: 'Layout Prompting',
+    coreIdeaBlurb:
+      'Learn how to describe structure, style, and personality clearly enough for AI to build a page that actually feels like you.',
     available: true,
     featured: true,
     detail: {
@@ -206,6 +211,9 @@ export const challenges: Challenge[] = [
     levelLabel: 'Quick Win',
     time: '20 min',
     description: 'A voting game with two choices',
+    coreIdea: 'Interactivity',
+    coreIdeaBlurb:
+      'Learn that apps can react to clicks, update what people see, and keep track of what just happened.',
     available: true,
     detail: {
       summary:
@@ -282,6 +290,9 @@ export const challenges: Challenge[] = [
     levelLabel: 'Quick Win',
     time: '30 min',
     description: 'Trivia quiz on any topic',
+    coreIdea: 'Content vs. Logic',
+    coreIdeaBlurb:
+      'Learn that the questions in an app can change completely while the code that runs the experience stays the same.',
     available: true,
     detail: {
       summary:
@@ -366,6 +377,9 @@ export const challenges: Challenge[] = [
     levelLabel: 'Quick Win',
     time: '15 min',
     description: 'Stylish countdown to any event',
+    coreIdea: 'Real-Time Updates',
+    coreIdeaBlurb:
+      'Learn how apps can keep checking the clock and update themselves automatically without the user doing anything.',
     available: true,
     detail: {
       summary:
@@ -440,6 +454,9 @@ export const challenges: Challenge[] = [
     levelLabel: 'Real Project',
     time: '1 hr',
     description: 'Look up weather for any city',
+    coreIdea: 'APIs',
+    coreIdeaBlurb:
+      'Learn how an app can ask another service for live information from the internet instead of trying to know everything itself.',
     available: true,
     detail: {
       summary:
@@ -555,6 +572,9 @@ export const challenges: Challenge[] = [
     levelLabel: 'Real Project',
     time: '1.5 hrs',
     description: 'Flashcards that track progress',
+    coreIdea: 'Memory',
+    coreIdeaBlurb:
+      'Learn how a browser can remember useful information, so an app can save progress and feel like it knows you came back.',
     available: true,
     detail: {
       summary:
@@ -665,7 +685,104 @@ export const challenges: Challenge[] = [
     levelLabel: 'Real Project',
     time: '1 hr',
     description: 'Bill splitter with tax and tip',
-    available: false,
+    coreIdea: 'Trustworthy UX',
+    coreIdeaBlurb:
+      'Learn that a useful app does not just calculate the right answer, it shows the logic clearly enough for people to trust it.',
+    available: true,
+    detail: {
+      summary:
+        "This is the app you wish someone in your group chat already had. When the check comes, someone always has to figure out tax, tip, and who owes a little more or less. In this challenge, you'll build a bill-splitting app that starts with an even split, then lets you make small adjustments so the final numbers feel fair. By the end, you'll have a tool you can actually use the next time you grab pizza, boba, or dinner with friends.",
+      outcome:
+        "A clean bill splitter where you enter the subtotal, tax, tip, and group size, then see what each person owes with simple per-person adjustments. A useful app that feels fair, polished, and ready to use in real life.",
+      setup: {
+        intro:
+          "Before you start building, let's get you set up in Lovable. If you have already used it, this will feel familiar. If not, think of it like ChatGPT, except instead of replying with ideas, it builds the app as you describe it.",
+        steps: [
+          ...lovableSetupSteps,
+          {
+            instruction: 'Start a new project for this challenge. Do not continue from a previous one.',
+          },
+        ],
+        ahaMoment: {
+          front: "Why do some money apps feel sketchy even when the math is probably right?",
+          back: "Because people do not trust numbers they cannot follow. A good bill splitter does not just show the final answer. It shows how it got there: subtotal, tax, tip, base split, then any adjustments. When the logic is visible, the app feels fair. That is product thinking, not just math.",
+        },
+      },
+      steps: [
+        {
+          title: 'Step 1: Build the Calculator Shell',
+          description:
+            'Start with the shape of the app before you worry about the math. You want inputs for subtotal, tax percent, tip percent, and number of people, plus a simple list where the user can enter names. Leave space below for the final split results. Getting the layout right first makes the logic easier to plug in afterward.',
+          promptTip:
+            'Build a bill splitting app with inputs for subtotal, tax percentage, tip percentage, and number of people. Add a simple way to enter each person\'s name. Below that, create a results area where each person\'s amount will appear. No split math yet, just the layout.',
+          terms: {
+            subtotal: 'the cost of the bill before tax and tip are added',
+          },
+        },
+        {
+          title: 'Step 2: Add the Even Split',
+          description:
+            'Now make the app actually calculate. It should add tax and tip to the subtotal, show the final total, and divide that number evenly across everyone in the group. This is your baseline. Every adjustment later should start from this even split.',
+          promptTip:
+            'Calculate the full bill by adding tax and tip to the subtotal, then split the final total evenly across all people. Show the subtotal, tax amount, tip amount, final total, and the base amount each person owes.',
+          terms: {
+            percentage: 'a part out of 100, like a 15% tip',
+          },
+        },
+        {
+          title: 'Step 3: Add Per-Person Adjustments',
+          description:
+            'Real bills are rarely perfectly even. Maybe one person had dessert, or someone only had fries and a drink. Add a way to increase or decrease one person\'s amount by a dollar value. The rest of the group should rebalance automatically so the grand total still matches exactly.',
+          promptTip:
+            'Add per-person adjustments. I want to be able to add or subtract a dollar amount for any person, with an optional short reason like dessert or ate less. If one person pays more, the rest of the group should share less automatically. If one person pays less, the rest of the group should share more automatically. Keep the grand total exactly correct.',
+          terms: {
+            adjustment: 'a small change to one person\'s amount to make the split feel fairer',
+          },
+        },
+        {
+          title: 'Step 4: Make the Logic Easy to Trust',
+          description:
+            'This is the product-thinking step. Do not just show the final numbers. Show the base split, each person\'s adjustment, and the final amount they owe. Add a clear check at the bottom that proves all the individual amounts add up to the full bill. This is what makes the app feel reliable instead of random.',
+          promptTip:
+            'Make the math easy to follow. For each person, show their base split amount, their adjustment, and their final amount owed. At the bottom, add a clear total check that confirms all final amounts together equal the full bill.',
+        },
+        {
+          title: 'Step 5: Handle Weird Cases',
+          description:
+            'Now think like a product builder, not just a prompt writer. What if someone enters 0 people? What if an adjustment is bigger than the whole share? What if a field is blank? Ask Lovable to catch the obvious bad inputs and show helpful messages instead of breaking or showing nonsense math.',
+          promptTip:
+            'Handle edge cases cleanly. If the number of people is less than 1, if a field is blank, or if an adjustment would make someone owe a negative amount, show a friendly message and prevent broken math from appearing.',
+          terms: {
+            'edge case': 'a weird or uncommon situation that can break an app if you do not plan for it',
+          },
+        },
+        {
+          title: 'Step 6: Style It and Publish',
+          description:
+            'Give the app a look that fits what it is: clean, friendly, and easy to scan in the middle of a real meal. A receipt-inspired layout can work well, but do not let style make the math harder to read. Test a normal split and an adjusted split, then click Publish and keep the link for the next time your group goes out.',
+          promptTip:
+            'Style this app to feel clean, modern, and easy to trust. Make the numbers readable, group each person\'s result clearly, and give it a polished bill or receipt vibe without making it cluttered.',
+        },
+      ],
+      tips: [
+        'Use realistic test numbers while building, like a $48 subtotal with 8.5% tax and 18% tip, so you can tell whether the math looks believable.',
+        'Name the people while you test. It is much easier to catch mistakes when you see Alex and Maya instead of Person 1 and Person 2.',
+        'After adding adjustments, always check that the grand total still matches exactly. Money apps lose trust fast when they are off by even one cent.',
+        'Keep the layout calm and readable. This app should help end an argument, not start one.',
+        'Test one person paying extra and one person paying less before you publish. If both work, the core logic is probably solid.',
+      ],
+      checklist: [
+        'You can enter a subtotal, tax percentage, tip percentage, and number of people',
+        'The app shows subtotal, tax, tip, final total, and the even base split',
+        'You can add or subtract a dollar adjustment for a specific person',
+        'Each person\'s final amount updates correctly after adjustments',
+        'The app clearly shows that all final amounts add up to the full bill',
+        'You have a live URL to share or use later',
+      ],
+      closingTitle: 'Fair split, no drama.',
+      closingMessage:
+        'You just built a tool people would actually want in real life. Next time the bill shows up, open your own app and settle it in about 10 seconds.',
+    },
   },
   {
     id: 'class-schedule',
@@ -674,6 +791,9 @@ export const challenges: Challenge[] = [
     levelLabel: 'Real Project',
     time: '1.5 hrs',
     description: 'Color-coded weekly class view',
+    coreIdea: 'Structured Data',
+    coreIdeaBlurb:
+      'Learn how organizing information cleanly makes it possible to turn a messy list of classes into a readable weekly view.',
     available: false,
   },
   {
@@ -683,6 +803,9 @@ export const challenges: Challenge[] = [
     levelLabel: 'Serious Build',
     time: 'multi-session',
     description: 'Members, events, signups for school clubs',
+    coreIdea: 'Systems Thinking',
+    coreIdeaBlurb:
+      'Learn how real products connect multiple features that each do one job but work together as one system.',
     available: false,
   },
   {
@@ -692,6 +815,9 @@ export const challenges: Challenge[] = [
     levelLabel: 'Serious Build',
     time: 'multi-session',
     description: 'Both sides of any argument',
+    coreIdea: 'AI as a Feature',
+    coreIdeaBlurb:
+      'Learn how to build an app that uses AI inside the experience, instead of making AI the whole experience.',
     available: false,
   },
   {
@@ -701,6 +827,9 @@ export const challenges: Challenge[] = [
     levelLabel: 'Serious Build',
     time: 'multi-session',
     description: 'Connect student tutors with learners',
+    coreIdea: 'Two-Sided Flows',
+    coreIdeaBlurb:
+      'Learn how products get harder when they need to work for two different groups of users with different goals.',
     available: false,
   },
 ];

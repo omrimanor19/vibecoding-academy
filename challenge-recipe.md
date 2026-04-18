@@ -24,6 +24,8 @@ Every challenge lives in `src/data/challenges.ts`. A challenge with a full detai
   levelLabel: string;       // 'Quick Win' | 'Real Project' | 'Serious Build'
   time: string;             // e.g. '20 min', '1 hr', 'multi-session'
   description: string;      // one-line teaser shown on the card grid
+  coreIdea: string;         // short learning concept label. e.g. 'APIs'
+  coreIdeaBlurb: string;    // one-sentence explanation of what the learner should understand by the end
   available: boolean;       // set to true when the detail page is ready
   featured?: boolean;       // highlights the card on the grid
   detail?: ChallengeDetailContent;
@@ -31,6 +33,19 @@ Every challenge lives in `src/data/challenges.ts`. A challenge with a full detai
 ```
 
 When `available` is false and `detail` is missing, the card shows as "coming soon." Don't add a partial `detail` to an unavailable challenge.
+
+### `coreIdea` and `coreIdeaBlurb` (required)
+
+Every challenge needs a clear teaching thesis, not just a project outcome. This is the core idea the learner should walk away with.
+
+- `coreIdea`: a short label that works on a card, usually 1-3 words. Examples: `APIs`, `Memory`, `Trustworthy UX`.
+- `coreIdeaBlurb`: one sentence in plain English that explains the idea in a way a high school student would actually understand.
+
+These fields show up in two places in the app:
+- on the challenge card, so learners can scan by what they will learn
+- near the top of the detail page, so the challenge opens with the concept, not just the build steps
+
+The core idea is not the same as the project title. "Weather Dashboard" is the project. "APIs" is the concept. "Split the Bill" is the project. "Trustworthy UX" is the concept.
 
 ---
 
@@ -162,6 +177,8 @@ The finishing moment. It appears in a green callout box at the bottom of the ste
 
 ## Content Principles
 
+**Every challenge should teach one clear idea.** Before writing any steps, decide what the learner is really supposed to understand by the end. That idea becomes `coreIdea` and `coreIdeaBlurb`. If you cannot name the concept cleanly, the challenge is probably trying to teach too much at once.
+
 **Walk through new concepts and processes.** Never assume the learner knows how to use a tool they haven't seen before. If a step involves something they've never done — signing up, clicking a specific button, reading output — describe it. The first challenge does this for Lovable setup. Future challenges that introduce a new tool (APIs, GitHub, Vercel) should do the same.
 
 **Explain technical terms the first time they appear.** Use term chips for one-liners. Use setup notes for anything that needs a sentence. Use aha moments for mental models that change how they approach the whole challenge.
@@ -244,6 +261,8 @@ setup: {
 
 Before setting `available: true` on a challenge, verify:
 
+- [ ] The `coreIdea` is short, clear, and different from the project title
+- [ ] The `coreIdeaBlurb` explains the concept in plain English, not curriculum language
 - [ ] The `outcome` answers: what exactly will they have when they're done?
 - [ ] The `summary` answers: why does this matter to a high schooler specifically?
 - [ ] Every step description gives context before the instruction

@@ -23,7 +23,14 @@ export function ChallengeCard({ challenge, onStartClick }: ChallengeCardProps) {
       </div>
 
       <h3 className="mb-2 text-lg font-bold text-slate-900">{challenge.title}</h3>
-      <p className="mb-6 text-sm text-slate-600">{challenge.description}</p>
+      <p className="mb-3 text-sm text-slate-600">{challenge.description}</p>
+
+      <div className="mb-6 rounded-xl border border-slate-200 bg-slate-50 px-3 py-3">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+          Core Idea
+        </p>
+        <p className="mt-1 text-sm font-medium text-slate-800">{challenge.coreIdea}</p>
+      </div>
 
       <Button
         fullWidth
