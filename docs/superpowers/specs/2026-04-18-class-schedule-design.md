@@ -8,7 +8,7 @@ Level: `intermediate`
 
 Create the next full Level 2 challenge, `Class Schedule`, for the Vibe Coding Academy site.
 
-The challenge should teach students how to turn messy human input into structured information that a product can actually use. The finished project is a phone-friendly weekly class schedule that students can view quickly between classes.
+The challenge should teach students how to turn rough human input into structured information that a product can actually use. The finished project is a phone-friendly weekly class schedule that students can view quickly between classes.
 
 ## Audience
 
@@ -20,7 +20,7 @@ They may have used ChatGPT before. They may not understand terms like structured
 
 The challenge will use a text-first flow.
 
-Students can type or paste their schedule in normal language. The core recipe will teach Lovable to turn that input into a clean weekly schedule view.
+Students can type or paste their schedule in normal language. The core recipe will use Gemini to interpret that text at runtime, then turn the result into a clean weekly schedule view inside a Lovable-built app.
 
 Printing is not part of the core challenge. It can be suggested as a stretch idea later if needed.
 
@@ -32,7 +32,7 @@ Core idea: `Structured Data`
 
 Core idea blurb:
 
-> Learn how turning messy information into a clean structure makes it possible to build an app that organizes it, displays it clearly, and makes it useful.
+> Learn how turning rough information into a clean structure makes it possible to build an app that organizes it, displays it clearly, and makes it useful.
 
 This challenge is not mainly about calendars. It is about transforming flexible human input into a reliable, readable product.
 
@@ -50,13 +50,13 @@ The learner finishes with a mobile-friendly weekly class schedule app that:
 
 ### Summary
 
-The summary should frame this as a real-life student tool, not a toy app. It should explain that students often get their schedules in annoying formats, copied text from a portal, rough notes, or a typed list, and that this challenge helps them turn that mess into something they can actually use every day from their phone.
+The summary should frame this as a real-life student tool, not a toy app. It should explain that students often get their schedules in annoying formats, copied text from a portal, rough notes, or a typed list, and that this challenge helps them turn that rough input into something they can actually use every day from their phone.
 
 ### Setup
 
-Include the standard Lovable setup since some students may start here without doing every earlier challenge.
+Include Gemini API setup plus the standard Lovable setup, since the app needs a model call to interpret natural-language schedule text at runtime.
 
-The setup intro should explain that Lovable can build the interface, but the student needs to describe both the input and the structure they want the app to create.
+The setup intro should explain that Lovable builds the interface, while Gemini handles the language task inside the app.
 
 The setup should include one aha moment.
 
@@ -66,7 +66,7 @@ Suggested front:
 
 Suggested back:
 
-> Because the goal is not to understand every possible sentence on Earth. The goal is to pull out a few useful pieces: class name, day, start time, end time, and maybe room or teacher. Once the app has those pieces in a clean structure, it can do useful things with them, like place classes in the right part of the week and keep the layout readable. That is what structured data means.
+> Because the app does not need to understand everything about the sentence. It only needs to pull out a few useful pieces: class name, day, start time, end time, and maybe room or teacher. Gemini can do that extraction, and once the app has those pieces in a clean structure, it can place classes in the right part of the week and keep the layout readable. That is what structured data means.
 
 ### Steps
 
@@ -86,18 +86,20 @@ Content:
 Why:
 Students should learn to build the visible structure first so the product shape is clear before the logic gets more complex.
 
-#### Step 2: Turn Natural Language Into Schedule Entries
+#### Step 2: Connect Gemini to Parse the Schedule
 
 Purpose:
 Teach the main concept of the challenge.
 
 Content:
-- tell Lovable to read schedule text and extract class name, day, start time, end time, and optional room or teacher
+- connect the app to Gemini with an API key
+- send pasted schedule text to Gemini with a specific instruction
+- ask Gemini to return class name, day, start time, end time, and optional room or teacher in a structured format
 - display the extracted classes in the weekly view
 - sort entries into the right day and time order
 
 Why:
-This is the moment where messy input becomes structured data.
+This is the moment where rough input becomes structured data.
 
 #### Step 3: Make It Easy to Scan
 
@@ -174,8 +176,9 @@ The final challenge content is ready when:
 ## Risks to Watch
 
 - Scope creep into upload flows, OCR, or image parsing
+- Forgetting that natural-language parsing at runtime requires a model call
 - Over-explaining technical concepts instead of keeping them grounded
-- Making the app sound like a calendar clone instead of an organizer for messy student input
+- Making the app sound like a calendar clone instead of an organizer for rough student input
 - Treating mobile support as optional polish instead of core product behavior
 
 ## Implementation Notes

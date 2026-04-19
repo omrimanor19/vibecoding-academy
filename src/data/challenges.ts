@@ -793,8 +793,107 @@ export const challenges: Challenge[] = [
     description: 'Color-coded weekly class view',
     coreIdea: 'Structured Data',
     coreIdeaBlurb:
-      'Learn how organizing information cleanly makes it possible to turn a messy list of classes into a readable weekly view.',
-    available: false,
+      'Learn how organizing information cleanly makes it possible to turn a rough class list into a readable weekly view.',
+    available: true,
+    detail: {
+      summary:
+        "School schedules usually show up in annoying formats: copied text from a portal, a note from a counselor, or something you typed out fast so you would not forget it. In this challenge, you will build an app that takes that rough input and turns it into a clean weekly schedule you can actually use. By the end, you will have a phone-friendly class schedule with your real classes, real times, and a live link you can open between classes.",
+      outcome:
+        "A mobile-friendly weekly class schedule that organizes classes by day and time, keeps the layout easy to scan, and uses consistent colors so you can find what you need fast. Something you would actually keep on your phone.",
+      setup: {
+        intro:
+          "Before you start building, you need two things: Lovable to build the app, and a Gemini API key so the app can read schedule text and turn it into structured class entries. This is the same idea as Study Buddy: Lovable builds the interface, and Gemini handles the language task inside the app.",
+        steps: [
+          {
+            instruction: 'Go to aistudio.google.com and sign in with your Google account.',
+          },
+          {
+            instruction: 'Click "Get API key" in the left sidebar, then click "Create API key."',
+          },
+          {
+            instruction: 'Copy the API key and save it somewhere safe. You will need it in Step 2.',
+            note: 'Keep this key private. Do not post it publicly or share it with anyone.',
+          },
+          ...lovableSetupSteps,
+          {
+            instruction: 'Start a new project for this challenge. Do not continue from a previous one.',
+          },
+        ],
+        ahaMoment: {
+          front: 'How can a computer make sense of a schedule written like a normal person would write it?',
+          back: 'Because the app does not need to understand everything about the sentence. It only needs to pull out a few useful pieces: class name, day, start time, end time, and maybe room or teacher. Gemini can do that extraction, and once those pieces are in a clean structure, your app can place classes in the right part of the week and keep the layout easy to read. That is what structured data means.',
+        },
+      },
+      steps: [
+        {
+          title: 'Step 1: Build the Input Screen',
+          description:
+            'Start by building the shell of the app. You want one large text box where a student can paste or type their schedule in normal language, one button to organize it, and an empty weekly layout below it where the results will appear. Ask for a mobile-friendly layout right away so the app is designed for phone use from the start, not fixed later.',
+          promptTip:
+            'Build a class schedule app with a large text area where I can paste or type my schedule in normal language, an Organize Schedule button, and an empty weekly schedule view below it. Make the layout clean, simple, and mobile-friendly from the start.',
+          terms: {
+            responsive: 'able to adjust its layout so it still works well on smaller screens like a phone',
+          },
+        },
+        {
+          title: 'Step 2: Connect Gemini',
+          description:
+            "Now wire up the AI step. When the user clicks the button, the app should send their pasted schedule text to Gemini with a very specific instruction: pull out each class and return it in a clean format the app can display. Paste your API key from the setup step into the prompt below. This is the moment where rough human writing becomes structured data your app can actually use.",
+          promptTip:
+            "Connect this app to the Google Gemini API. My API key is [paste your key here]. When I click Organize Schedule, send the pasted schedule text to Gemini and ask it to return a JSON array where each class includes: className, day, startTime, endTime, and room or teacher if available. Then show the classes in the correct day and time order in the weekly schedule view.",
+          terms: {
+            'structured data': 'information broken into clear pieces so a computer can organize and display it reliably',
+            JSON: 'a standard format apps use to pass structured data back and forth',
+          },
+        },
+        {
+          title: 'Step 3: Make It Easy to Scan',
+          description:
+            'A schedule only helps if you can understand it fast. Tell Lovable to color-code the classes, keep the same class the same color across the week, and make each block easy to read at a glance. This is where the app starts feeling useful instead of just technically correct.',
+          promptTip:
+            'Color-code the schedule so the same class keeps the same color across the week. Make each class block easy to scan with the class name, time, and optional room, and keep the layout clean and readable.',
+        },
+        {
+          title: 'Step 4: Handle Imperfect Input',
+          description:
+            'Real schedules are rarely perfectly formatted. Some students will paste incomplete notes, forget times, or use odd spacing. Ask Lovable to handle that gracefully with helpful messages and partial results instead of breaking the whole app.',
+          promptTip:
+            'If the schedule box is empty, or if the text is too unclear to organize, show a friendly message that explains what to fix. If some classes are missing details, still show the ones the app can understand instead of breaking.',
+          terms: {
+            'partial results': 'showing the useful parts that worked, even if some parts of the input were unclear',
+          },
+          ahaMoment: {
+            front: "What should your app do when a real student pastes something imperfect instead of ideal?",
+            back: "That is the real test. Most people only design for the easy version, when the input is clean and complete. But real users forget things, mistype things, and paste odd formatting all the time. A strong app still helps them move forward. Handling imperfect input is not extra polish, it is part of making the product trustworthy.",
+          },
+        },
+        {
+          title: 'Step 5: Polish for Phone Use',
+          description:
+            'Now make the schedule feel good in the situation where students will actually use it, on a phone between classes. Tighten the spacing, keep the text readable, and make sure day sections stack cleanly on smaller screens. Test it with your real schedule, then click Publish and save the live link.',
+          promptTip:
+            'Polish this for real phone use. On small screens, stack the days cleanly, keep the text readable, make the class blocks easy to tap and scan, and keep the weekly view organized without feeling cramped.',
+        },
+      ],
+      tips: [
+        'Paste a realistic schedule while you build. Real class names and times make it much easier to spot whether the layout actually works.',
+        'Keep class names short if your real schedule uses long course titles. Short labels are easier to scan on a phone.',
+        'Use the same color for the same class every time it appears. Consistency matters more than fancy design here.',
+        'Test the smallest screen you can in Lovable before publishing. If it works there, it will usually work everywhere else.',
+        'If the parser misses something, fix the prompt, not just the example text. The goal is an app that can handle normal student input, not one perfect sample.',
+      ],
+      checklist: [
+        'You can paste or type a schedule in normal language',
+        'The app turns that text into class entries organized by day and time',
+        'The schedule uses consistent colors that make classes easy to scan',
+        'It handles empty or unclear input with a helpful message',
+        'It looks good on a phone, not just on a laptop',
+        'You have a live URL to save or share',
+      ],
+      closingTitle: 'Your week, organized.',
+      closingMessage:
+        'You built something students could actually use every day. That is the power of turning rough information into a clean structure.',
+    },
   },
   {
     id: 'club-manager',
