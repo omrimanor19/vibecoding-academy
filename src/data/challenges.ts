@@ -896,6 +896,133 @@ export const challenges: Challenge[] = [
     },
   },
   {
+    id: 'event-signup-manager',
+    title: 'Event Signup Manager',
+    level: 'advanced',
+    levelLabel: 'Serious Build',
+    time: 'multi-session',
+    description: 'Public RSVP links with an organizer dashboard',
+    coreIdea: 'Shared Data',
+    coreIdeaBlurb:
+      'Learn how one database can power two different views: an organizer dashboard for managing events and a public page where people sign up.',
+    available: true,
+    detail: {
+      summary:
+        "Coordinating a school event usually turns into scattered texts, messy spreadsheets, and someone trying to remember who said they were coming. In this challenge, you will build a real signup manager with an organizer dashboard and public RSVP links people can open from any device. By the end, you will have an app a club, team, class, or volunteer group could actually use to create events, collect signups, and see responses in one place.",
+      outcome:
+        'A multi-event signup app with an organizer dashboard, public RSVP links, a persistent database, attendee confirmation screens, signup counts, and a way to close signups when an event is full or finished. Something useful enough to run a real club meeting, tournament, fundraiser, or volunteer event.',
+      setup: {
+        intro:
+          "Before you start building, you need Lovable and one new idea: shared storage. Earlier projects could remember things in one browser, but this app needs a database so an RSVP submitted from someone else's phone can appear later on the organizer's dashboard.",
+        steps: [
+          ...lovableSetupSteps,
+          {
+            instruction: 'Start a new project for this challenge. Do not continue from a previous one.',
+          },
+          {
+            instruction:
+              'When Lovable asks whether you want to connect a backend, database, or Supabase, choose the option that lets the app save data.',
+            note: 'Lovable changes its exact labels sometimes. The important idea is that this project needs shared data, not browser-only memory.',
+          },
+        ],
+        ahaMoment: {
+          front:
+            'Why does this app need a real database when earlier projects could remember things in the browser?',
+          back: "Browser memory only lives on one device. That works for a personal study app, but it fails when someone else signs up from their phone and the organizer needs to see it later. A database is shared storage for the whole app. The public signup page writes to it, and the organizer dashboard reads from it. That shared place is what turns separate screens into one real product.",
+        },
+      },
+      steps: [
+        {
+          title: 'Session 1: Plan the App',
+          description:
+            'Start by mapping the two experiences before you build any screens. The organizer needs a private dashboard for creating events and reading signups. Attendees need a public signup page that works without an account. Planning both sides now helps Lovable understand that this is one connected app, not two separate projects.',
+          promptTip:
+            'I want to build an Event Signup Manager with two experiences. The organizer has a dashboard where they can create multiple events, edit event details, copy a public signup link, close signups, and see attendee lists. Attendees open a public event link, read the details, RSVP with their name and email, and see a confirmation screen. Use a simple organizer passcode or private admin link instead of full user accounts.',
+          terms: {
+            dashboard: 'a private control screen where the organizer manages events and signups',
+            'public link': 'a URL anyone can open without logging in',
+          },
+        },
+        {
+          title: 'Session 2: Build the Dashboard',
+          description:
+            'Build the organizer side first because it defines what data the app needs. The dashboard should show a list of events, a form to create a new event, and space for signup counts and attendee lists. Do not connect the database yet. Get the shape of the product right before adding persistence.',
+          promptTip:
+            'Build the organizer dashboard for this event signup app. Include a create event form with title, date, time, location, description, and one optional signup question. Show a list of events below the form. For each event, show its status, signup count, buttons to edit, close signups, copy signup link, and view attendees. Use placeholder data for now, not a real database yet.',
+          terms: {
+            placeholder: 'temporary sample content that shows where real data will appear later',
+          },
+        },
+        {
+          title: 'Session 3: Add the Database',
+          description:
+            'Now add the shared storage that makes this a real app. You need one place to save events and another place to save signups. The most important relationship is that every signup belongs to one event. That relationship is what lets the dashboard show the right attendees under the right event.',
+          promptTip:
+            'Connect this app to a persistent database. Create an events table or collection with title, date, time, location, description, status, and optional signupQuestion. Create a signups table or collection with eventId, attendeeName, attendeeEmail, optionalAnswer, and createdAt. Save new events to the database and load them in the organizer dashboard.',
+          terms: {
+            database: 'shared storage where an app saves information so different people and devices can see it later',
+            eventId: 'the unique value that connects a signup to the exact event it belongs to',
+            persistent: 'saved after the page closes or someone opens the app from another device',
+          },
+        },
+        {
+          title: 'Session 4: Create Signup Links',
+          description:
+            'This is where the public attendee experience comes in. Each event needs its own signup page or route, so the organizer can copy one link and send it in a group chat, email, or class announcement. When an attendee opens that link, they should only see the event details and RSVP form, not the organizer dashboard.',
+          promptTip:
+            'Create a public signup page for each event using the event ID in the URL. From the organizer dashboard, the Copy Signup Link button should copy that event\'s public URL. On the public page, show the event title, date, time, location, description, and optional signup question. Add an RSVP form with name, email, and optional answer, then show a confirmation screen after submission.',
+          terms: {
+            route: 'a specific page path in an app, like /event/123',
+            RSVP: 'a response that tells the organizer whether someone is coming',
+          },
+        },
+        {
+          title: 'Session 5: Connect Signups',
+          description:
+            'Now make the two experiences meet in the database. When someone submits the public RSVP form, the app should save that signup with the event ID. When the organizer returns to the dashboard, the signup should appear under that event. Add close signups and basic duplicate handling so the app feels ready for real people.',
+          promptTip:
+            'When an attendee submits the RSVP form, save the signup to the database with the correct eventId. In the organizer dashboard, show signups grouped under the matching event and update the signup count. If signups are closed, show a clear closed message on the public page and hide the RSVP form. If the same email tries to sign up for the same event twice, show a friendly message instead of creating a duplicate signup.',
+          terms: {
+            'duplicate signup': 'a second RSVP from the same person for the same event',
+            'closed signups': 'a state where people can view the event but can no longer submit the form',
+          },
+          ahaMoment: {
+            front: 'When does this stop being a dashboard and become a real shared product?',
+            back: 'The moment an action on one page changes what someone sees on another page. An attendee submits a form from a phone, the database saves it, and the organizer dashboard shows it later. That loop is the product. If the data does not flow all the way through, the screens may look finished but the app is not actually working yet.',
+          },
+        },
+        {
+          title: 'Session 6: Polish and Test',
+          description:
+            'Shared apps fail in the gaps between screens, so test the whole path. Create an event as the organizer, copy the public link, open it like an attendee, submit a signup, then return to the dashboard and check that it appears in the right place. Test the public page on a phone-sized screen because most people will open signup links from messages.',
+          promptTip:
+            'Polish this app for real use. Make the organizer dashboard easy to scan, make the public signup page phone-friendly, add helpful messages for missing name or email, and make the confirmation screen clear. Test the full flow from creating an event to submitting an RSVP to seeing it on the dashboard, then prepare it for publishing.',
+          terms: {
+            'full flow': 'the complete path a real user takes from start to finish',
+          },
+        },
+      ],
+      tips: [
+        'Test with two browser tabs: one for the organizer dashboard and one for the public signup page.',
+        'Use real event examples while building, like robotics tryouts or a club fundraiser, so the forms and dashboard feel realistic.',
+        'Keep the public signup page short. Attendees are more likely to finish if the form asks only for what the organizer actually needs.',
+        'Do not add accounts until this version works. Shared data is already the main lesson.',
+        'Ask Lovable for QR codes, capacity limits, waitlists, or CSV export only after the core signup loop is working.',
+      ],
+      checklist: [
+        'You can create more than one event from the organizer dashboard',
+        'Each event has its own public signup link',
+        'An attendee can RSVP from the public page without creating an account',
+        'The signup appears under the correct event in the organizer dashboard',
+        'Closed events show a clear message instead of an active RSVP form',
+        'You have tested both flows and published a live URL',
+      ],
+      closingTitle: 'Your signup system works.',
+      closingMessage:
+        'You built a shared app, not only a page. One database now connects an organizer dashboard with public signup links people can actually use.',
+    },
+  },
+  {
     id: 'club-manager',
     title: 'Club Manager',
     level: 'advanced',
