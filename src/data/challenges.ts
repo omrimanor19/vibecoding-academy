@@ -4,8 +4,16 @@ export interface ChallengeStep {
   title: string;
   description: string;
   promptTip?: string;
+  miniSteps?: ChallengeMiniStep[];
   terms?: Record<string, string>;
   ahaMoment?: AhaMomentContent;
+}
+
+export interface ChallengeMiniStep {
+  title: string;
+  description: string;
+  promptTip?: string;
+  terms?: Record<string, string>;
 }
 
 export interface SetupStep {
@@ -43,7 +51,7 @@ export interface Challenge {
   coreIdea: string;
   coreIdeaBlurb: string;
   available: boolean;
-  featured?: boolean;
+  spotlightLabel?: string;
   detail?: ChallengeDetailContent;
 }
 
@@ -55,7 +63,7 @@ export interface ChallengeLevelMeta {
   description?: string;
 }
 
-// Shared Lovable setup steps — used by all Level 1 challenges so the
+// Shared Lovable setup steps, used by early challenges so the
 // instructions stay in sync if Lovable's UI ever changes.
 const lovableSetupSteps: SetupStep[] = [
   {
@@ -80,6 +88,15 @@ const lovableSetupSteps: SetupStep[] = [
   },
 ];
 
+const startFreshProjectStep: SetupStep = {
+  instruction: 'Start a new project for this challenge. Do not continue from a previous one.',
+};
+
+const lovableSetupWithNewProjectSteps: SetupStep[] = [
+  ...lovableSetupSteps,
+  startFreshProjectStep,
+];
+
 export const challengeLevels: ChallengeLevelMeta[] = [
   {
     key: 'beginner',
@@ -87,19 +104,23 @@ export const challengeLevels: ChallengeLevelMeta[] = [
     stepNumber: '1',
     accentClassName: 'bg-emerald-500',
     description:
-      'Great starting points if you have never built anything before. Pick any one you like, in any order. Each challenge takes 15 to 30 minutes and leaves you with something real you built yourself.',
+      'Great starting points if you have never built anything before. We recommend starting with My Landing Page, but you can pick any one you like, in any order. Each challenge takes 15 to 30 minutes and leaves you with something real you built yourself.',
   },
   {
     key: 'intermediate',
     heading: 'Level 2: Real Projects',
     stepNumber: '2',
     accentClassName: 'bg-sky-500',
+    description:
+      'These projects go beyond simple pages and quick interactions. You will connect to real data, save progress, handle user input more carefully, and build tools that still feel useful after the tutorial is over.',
   },
   {
     key: 'advanced',
     heading: 'Level 3: Serious Builds',
     stepNumber: '3',
     accentClassName: 'bg-violet-500',
+    description:
+      "These are multi-session builds that feel closer to real products. You will plan before building, connect multiple screens, use shared data, and test flows from more than one person's point of view.",
   },
 ];
 
@@ -115,7 +136,7 @@ export const challenges: Challenge[] = [
     coreIdeaBlurb:
       'Learn how to describe structure, style, and personality clearly enough for AI to build a page that actually feels like you.',
     available: true,
-    featured: true,
+    spotlightLabel: 'Start here',
     detail: {
       summary:
         "Your personal landing page is your digital front door. In this challenge, you'll build a page that shows who you are, what you're interested in, and how people can reach you. By the end, you'll have a real, live webpage with your own URL that you can share with anyone. Use it on college applications, include it in internship outreach emails, share it on social media, or just point people to it when they want to know more about you.",
@@ -124,28 +145,7 @@ export const challenges: Challenge[] = [
       setup: {
         intro:
           "Before you write a single prompt, let's get you set up. Lovable is like ChatGPT, except instead of just answering you in text, it actually builds a real website as you talk to it.",
-        steps: [
-          {
-            instruction: 'Go to lovable.dev and create a free account.',
-            note: 'You can sign up with Google. It takes about 2 minutes.',
-          },
-          {
-            instruction: "Once you're logged in, click \"Start building\" or \"New Project\" to create a new project.",
-          },
-          {
-            instruction:
-              'You will see a text box at the bottom of the screen. This is where you type what you want to build, in plain English, just like you would in ChatGPT.',
-            note: 'No coding knowledge needed. You just describe what you want.',
-          },
-          {
-            instruction:
-              'Type your first prompt and hit Enter. Lovable will read it and start building your site. You will see the result appear on the right side of the screen.',
-          },
-          {
-            instruction:
-              "If you don't like something, just say so in the next message. You can keep chatting to change, add, or fix anything. It's a conversation.",
-          },
-        ],
+        steps: lovableSetupSteps,
         ahaMoment: {
           front:
             "Why do some people get amazing results from AI builders while others just get a mess?",
@@ -223,12 +223,7 @@ export const challenges: Challenge[] = [
       setup: {
         intro:
           "Before you start building, let's get you set up in Lovable. If you have done this before, you can skim through quickly. If this is your first time, follow each step.",
-        steps: [
-          ...lovableSetupSteps,
-          {
-            instruction: 'Start a new project for this challenge. Do not continue from a previous one.',
-          },
-        ],
+        steps: lovableSetupWithNewProjectSteps,
         ahaMoment: {
           front: "What's the difference between a webpage and an app?",
           back: "A webpage shows you things. An app responds to what you do. When you click a choice and the vote count goes up in real time, your page is listening, remembering, and reacting. That is called interactivity, and it is what you are building right now. Once you know how to make one thing interactive, you can make almost anything.",
@@ -302,12 +297,7 @@ export const challenges: Challenge[] = [
       setup: {
         intro:
           "Before you start building, let's get you set up in Lovable. If you have done this before, you can skim through quickly. If this is your first time, follow each step.",
-        steps: [
-          ...lovableSetupSteps,
-          {
-            instruction: 'Start a new project for this challenge. Do not continue from a previous one.',
-          },
-        ],
+        steps: lovableSetupWithNewProjectSteps,
         ahaMoment: {
           front: "If you wanted to swap out every question in a quiz, how long do you think that would take?",
           back: "About two minutes. Here is why: in a well-built quiz app, the questions are just a list of text. The code handles everything else — showing one question at a time, checking your answer, keeping score. The content and the logic are separate. That means you can change every question without touching anything that makes the quiz actually work. This is one of the most powerful ideas in all of software.",
@@ -389,12 +379,7 @@ export const challenges: Challenge[] = [
       setup: {
         intro:
           "Before you start, let's get you set up in Lovable. If you've done this before, skim through. If it's your first time, follow each step.",
-        steps: [
-          ...lovableSetupSteps,
-          {
-            instruction: 'Start a new project for this challenge. Do not continue from a previous one.',
-          },
-        ],
+        steps: lovableSetupWithNewProjectSteps,
         ahaMoment: {
           front: "How does a countdown update every second without you clicking anything?",
           back: "When you build a countdown, you write code that says: check what time it is right now, calculate the difference, then do it again in exactly one second. Computers can repeat instructions like that forever without stopping. Once you set it up, the page handles itself. This is how live scoreboards, sports scores, and anything that updates automatically actually works.",
@@ -697,12 +682,7 @@ export const challenges: Challenge[] = [
       setup: {
         intro:
           "Before you start building, let's get you set up in Lovable. If you have already used it, this will feel familiar. If not, think of it like ChatGPT, except instead of replying with ideas, it builds the app as you describe it.",
-        steps: [
-          ...lovableSetupSteps,
-          {
-            instruction: 'Start a new project for this challenge. Do not continue from a previous one.',
-          },
-        ],
+        steps: lovableSetupWithNewProjectSteps,
         ahaMoment: {
           front: "Why do some money apps feel sketchy even when the math is probably right?",
           back: "Because people do not trust numbers they cannot follow. A good bill splitter does not just show the final answer. It shows how it got there: subtotal, tax, tip, base split, then any adjustments. When the logic is visible, the app feels fair. That is product thinking, not just math.",
@@ -814,10 +794,7 @@ export const challenges: Challenge[] = [
             instruction: 'Copy the API key and save it somewhere safe. You will need it in Step 2.',
             note: 'Keep this key private. Do not post it publicly or share it with anyone.',
           },
-          ...lovableSetupSteps,
-          {
-            instruction: 'Start a new project for this challenge. Do not continue from a previous one.',
-          },
+          ...lovableSetupWithNewProjectSteps,
         ],
         ahaMoment: {
           front: 'How can a computer make sense of a schedule written like a normal person would write it?',
@@ -910,18 +887,14 @@ export const challenges: Challenge[] = [
       summary:
         "Coordinating a school event usually turns into scattered texts, messy spreadsheets, and someone trying to remember who said they were coming. In this challenge, you will build a real signup manager with an organizer dashboard and public RSVP links people can open from any device. By the end, you will have an app a club, team, class, or volunteer group could actually use to create events, collect signups, and see responses in one place.",
       outcome:
-        'A multi-event signup app with an organizer dashboard, public RSVP links, a persistent database, attendee confirmation screens, signup counts, and a way to close signups when an event is full or finished. Something useful enough to run a real club meeting, tournament, fundraiser, or volunteer event.',
+        'You are building an app that helps someone collect RSVPs for events. Imagine a club officer planning a meeting, fundraiser, tournament, or volunteer shift. They create the event in a private organizer dashboard, copy a signup link, and send that link to people. Attendees open the link, read the event details, enter their name and email, and get a confirmation. The organizer can come back later and see everyone who signed up for each event.',
       setup: {
         intro:
-          "Before you start building, you need Lovable and one new idea: shared storage. Earlier projects could remember things in one browser, but this app needs a database so an RSVP submitted from someone else's phone can appear later on the organizer's dashboard.",
+          "Before you start building, focus on one new idea: shared storage. Earlier projects could remember things in one browser, but this app needs a database so an RSVP submitted from someone else's phone can appear later on the organizer's dashboard.",
         steps: [
-          ...lovableSetupSteps,
-          {
-            instruction: 'Start a new project for this challenge. Do not continue from a previous one.',
-          },
           {
             instruction:
-              'When Lovable asks whether you want to connect a backend, database, or Supabase, choose the option that lets the app save data.',
+              'When Lovable asks whether you want to connect a backend, database, or Supabase, choose the option that lets the app save shared data.',
             note: 'Lovable changes its exact labels sometimes. The important idea is that this project needs shared data, not browser-only memory.',
           },
         ],
@@ -933,59 +906,226 @@ export const challenges: Challenge[] = [
       },
       steps: [
         {
-          title: 'Session 1: Plan the App',
+          title: 'Session 1: Plan the Shape',
           description:
-            'Start by mapping the two experiences before you build any screens. The organizer needs a private dashboard for creating events and reading signups. Attendees need a public signup page that works without an account. Planning both sides now helps Lovable understand that this is one connected app, not two separate projects.',
-          promptTip:
-            'I want to build an Event Signup Manager with two experiences. The organizer has a dashboard where they can create multiple events, edit event details, copy a public signup link, close signups, and see attendee lists. Attendees open a public event link, read the details, RSVP with their name and email, and see a confirmation screen. Use a simple organizer passcode or private admin link instead of full user accounts.',
-          terms: {
-            dashboard: 'a private control screen where the organizer manages events and signups',
-            'public link': 'a URL anyone can open without logging in',
-          },
+            'Use this session to help Lovable understand the product before you ask it to build screens. You are naming the organizer side, the attendee side, and the shared data between them. Keep this as planning work so the first build prompt does not become too wide.',
+          miniSteps: [
+            {
+              title: 'Describe the product',
+              description:
+                'Switch Lovable to Plan mode before you paste this prompt. Plan mode lets you talk through the app before Lovable edits code, but it still uses credits, so keep the planning prompts focused.',
+              promptTip:
+                'I want to build an Event Signup Manager. Help me plan the app before we build. What screens, data, and build order do we need?',
+              terms: {
+                dashboard: 'a private control screen where the organizer manages events and signups',
+                database: 'shared storage where an app saves information so different people and devices can see it later',
+                'Plan mode': 'Lovable\'s planning space for reviewing an approach before Agent mode edits the app',
+              },
+            },
+            {
+              title: 'Set the access rule',
+              description:
+                'Now narrow the access model. This challenge should avoid accounts and roles, so tell Lovable the boundary before it invents a bigger system. The passcode is a learning shortcut, not real security.',
+              promptTip:
+                'Update the plan to use a simple organizer passcode or private admin link as a prototype shortcut. Label it clearly in the app as not real security. Do not add user accounts, roles, invites, payments, or notifications.',
+              terms: {
+                passcode: 'a simple code the organizer enters to see the dashboard, useful for a prototype but not real security',
+              },
+            },
+            {
+              title: 'List the data',
+              description:
+                'Before building screens, make Lovable name the information the app needs to remember. Lovable should give you two short lists: event data such as title, date, time, location, description, and status, plus signup data such as eventId, name, email, optional answer, and signup time. Check that eventId is included because that is how each RSVP gets attached to the correct event. You will use this list in Session 3 when you create the database tables.',
+              promptTip:
+                'List the minimum event data and signup data this app needs for a working first version. Return the answer as two short lists: Events and Signups.',
+            },
+            {
+              title: 'Choose the build order',
+              description:
+                'End the planning session by turning the product into a sequence. This gives you a clean path for the next prompts.',
+              promptTip:
+                'Turn this into a build order. Put the organizer dashboard first, then the database, then the public signup page, then connecting signups back to the dashboard.',
+            },
+          ],
         },
         {
           title: 'Session 2: Build the Dashboard',
           description:
-            'Build the organizer side first because it defines what data the app needs. The dashboard should show a list of events, a form to create a new event, and space for signup counts and attendee lists. Do not connect the database yet. Get the shape of the product right before adding persistence.',
-          promptTip:
-            'Build the organizer dashboard for this event signup app. Include a create event form with title, date, time, location, description, and one optional signup question. Show a list of events below the form. For each event, show its status, signup count, buttons to edit, close signups, copy signup link, and view attendees. Use placeholder data for now, not a real database yet.',
-          terms: {
-            placeholder: 'temporary sample content that shows where real data will appear later',
-          },
+            "Before you paste the first prompt in this session, review Lovable's plan. If the plan looks right, approve it so Lovable switches into Agent mode and can edit the app. Build the organizer side first because it defines what data the app needs. Keep this session visual and local. Do not connect the database until the dashboard shape is clear.",
+          miniSteps: [
+            {
+              title: 'Create the empty layout',
+              description:
+                'Ask for the dashboard shell only. You want the page structure before any real data or advanced behavior.',
+              promptTip:
+                'Build only the organizer dashboard layout. Include a page title, a create event area, and an empty event list area. Use sample text only. Do not connect a database yet.',
+            },
+            {
+              title: 'Add the event form',
+              description:
+                'Now add the fields an organizer needs to create one event. This is still a visual form, not a saving flow.',
+              promptTip:
+                'Add a create event form with fields for title, date, time, location, description, and one optional signup question. Do not save anything yet.',
+            },
+            {
+              title: 'Add temporary event cards',
+              description:
+                'Add two fake example events so you can design what the dashboard will look like before the database exists. These are temporary layout examples, not real saved events. In Session 3, you will replace them with real events loaded from the database.',
+              promptTip:
+                'Show two temporary example event cards below the form. Each card should show title, date, time, location, status, and a signup count. Add placeholder buttons for Edit, Close Signups, Copy Signup Link, and View Attendees.',
+              terms: {
+                placeholder: 'temporary sample content that shows where real data will appear later',
+              },
+            },
+            {
+              title: 'Add organizer access',
+              description:
+                'Add a lightweight passcode screen for the organizer dashboard. Label it as a prototype shortcut, not real security, so learners do not mistake it for production protection.',
+              promptTip:
+                'Add a simple organizer passcode screen before the dashboard. Use one demo passcode, show a friendly message if the passcode is wrong, and include a small note that says this is a prototype passcode, not real security.',
+            },
+          ],
         },
         {
           title: 'Session 3: Add the Database',
           description:
-            'Now add the shared storage that makes this a real app. You need one place to save events and another place to save signups. The most important relationship is that every signup belongs to one event. That relationship is what lets the dashboard show the right attendees under the right event.',
-          promptTip:
-            'Connect this app to a persistent database. Create an events table or collection with title, date, time, location, description, status, and optional signupQuestion. Create a signups table or collection with eventId, attendeeName, attendeeEmail, optionalAnswer, and createdAt. Save new events to the database and load them in the organizer dashboard.',
-          terms: {
-            database: 'shared storage where an app saves information so different people and devices can see it later',
-            eventId: 'the unique value that connects a signup to the exact event it belongs to',
-            persistent: 'saved after the page closes or someone opens the app from another device',
-          },
+            'Now add the shared storage that makes this a real app. Move one piece at a time: create where events live, save new events, load and edit saved events, then prepare a place for signups. The key idea is that every signup will eventually belong to one event.',
+          miniSteps: [
+            {
+              title: 'Create the events table',
+              description:
+                'Start with events only. The app cannot collect signups until it has real events to connect them to.',
+              promptTip:
+                'Connect a persistent database and create an events table or collection with title, date, time, location, description, status, and optional signupQuestion.',
+              terms: {
+                persistent: 'saved after the page closes or someone opens the app from another device',
+                table: 'a named place in a database where one type of information is stored',
+              },
+            },
+            {
+              title: 'Save new events',
+              description:
+                'Now make the create event form write to the database. Keep the behavior focused on saving one event.',
+              promptTip:
+                'When I submit the create event form, save a new event to the events table. Set the event status to open by default.',
+            },
+            {
+              title: 'Load saved events',
+              description:
+                'Replace sample cards with real saved events. This proves the dashboard is reading from shared storage.',
+              promptTip:
+                'Load events from the database and show them in the dashboard event list. Remove the sample event cards after real events load.',
+            },
+            {
+              title: 'Edit event details',
+              description:
+                'Now make the Edit button real. Keep this limited to changing event information, not adding accounts or permissions.',
+              promptTip:
+                'Make the Edit button open an edit form for that event. Let the organizer update title, date, time, location, description, and optional signup question, then save the changes to the events table.',
+            },
+            {
+              title: 'Create the signups table',
+              description:
+                'Prepare the second data table without building the public form yet. The important field is eventId because that connects each RSVP to one event.',
+              promptTip:
+                'Create a signups table or collection with eventId, attendeeName, attendeeEmail, optionalAnswer, and createdAt. Do not build the public RSVP form yet.',
+              terms: {
+                eventId: 'the unique value that connects a signup to the exact event it belongs to',
+              },
+            },
+          ],
         },
         {
           title: 'Session 4: Create Signup Links',
           description:
-            'This is where the public attendee experience comes in. Each event needs its own signup page or route, so the organizer can copy one link and send it in a group chat, email, or class announcement. When an attendee opens that link, they should only see the event details and RSVP form, not the organizer dashboard.',
-          promptTip:
-            'Create a public signup page for each event using the event ID in the URL. From the organizer dashboard, the Copy Signup Link button should copy that event\'s public URL. On the public page, show the event title, date, time, location, description, and optional signup question. Add an RSVP form with name, email, and optional answer, then show a confirmation screen after submission.',
-          terms: {
-            route: 'a specific page path in an app, like /event/123',
-            RSVP: 'a response that tells the organizer whether someone is coming',
-          },
+            'This is where the public attendee experience begins. Build it in layers: page route first, link copying second, form third. When an attendee opens the link, they should not see organizer controls.',
+          miniSteps: [
+            {
+              title: 'Create the public page',
+              description:
+                'Start with a public event page that only reads and displays one event. Do not add the RSVP form yet.',
+              promptTip:
+                'Create a public event page at /event/:eventId that loads one event by its eventId and shows the title, date, time, location, and description.',
+              terms: {
+                route: 'a specific page path in an app, like /event/123',
+              },
+            },
+            {
+              title: 'Copy the signup link',
+              description:
+                'Now connect the dashboard button to the public page. This lets the organizer share the correct link for one event.',
+              promptTip:
+                'Make the Copy Signup Link button copy the public URL for that event. Show a small copied message after it works.',
+              terms: {
+                'public URL': 'the shareable web address for one event signup page',
+              },
+            },
+            {
+              title: 'Add the RSVP form',
+              description:
+                'Add the attendee form after the public page exists. Keep the form short so people can finish it from a phone.',
+              promptTip:
+                'On the public event page, add an RSVP form with name and email. If the event has an optional signup question, show one answer field.',
+              terms: {
+                RSVP: 'a response that tells the organizer whether someone is coming',
+              },
+            },
+          ],
         },
         {
           title: 'Session 5: Connect Signups',
           description:
-            'Now make the two experiences meet in the database. When someone submits the public RSVP form, the app should save that signup with the event ID. When the organizer returns to the dashboard, the signup should appear under that event. Add close signups and basic duplicate handling so the app feels ready for real people.',
-          promptTip:
-            'When an attendee submits the RSVP form, save the signup to the database with the correct eventId. In the organizer dashboard, show signups grouped under the matching event and update the signup count. If signups are closed, show a clear closed message on the public page and hide the RSVP form. If the same email tries to sign up for the same event twice, show a friendly message instead of creating a duplicate signup.',
-          terms: {
-            'duplicate signup': 'a second RSVP from the same person for the same event',
-            'closed signups': 'a state where people can view the event but can no longer submit the form',
-          },
+            'Now make the two experiences meet in the database. Work through the loop in small pieces: save the RSVP, confirm after it saves, show it on the dashboard, update the count, close signups, then block duplicates.',
+          miniSteps: [
+            {
+              title: 'Save one RSVP',
+              description:
+                'Connect the public form to the signups table. This is the first moment an attendee action writes shared data.',
+              promptTip:
+                'When the RSVP form submits, save attendeeName, attendeeEmail, optionalAnswer, eventId, and createdAt to the signups table.',
+            },
+            {
+              title: 'Show confirmation',
+              description:
+                'Only confirm after the database save succeeds. This keeps the app honest because a failed RSVP should not look finished.',
+              promptTip:
+                'After the RSVP saves successfully, show a confirmation screen with the event title and attendee name. If saving fails, show a helpful error message instead of confirming.',
+            },
+            {
+              title: 'Show attendees',
+              description:
+                'Now make the organizer dashboard read the signups for one event. The eventId filter is what keeps responses under the right event.',
+              promptTip:
+                'In the dashboard, add a View Attendees area for one event that loads signups where eventId matches that event.',
+            },
+            {
+              title: 'Update signup counts',
+              description:
+                'Once attendees show up correctly, replace the fake counts with real counts. This gives the organizer a fast summary.',
+              promptTip:
+                'Replace placeholder signup counts with real counts from the signups table for each event.',
+            },
+            {
+              title: 'Close signups',
+              description:
+                'Add the closed state after the basic signup loop works. Closed events should still be readable, but the form should stop accepting responses.',
+              promptTip:
+                'Make Close Signups change the event status to closed. On closed public event pages, hide the RSVP form and show a clear closed message.',
+              terms: {
+                'closed signups': 'a state where people can view the event but can no longer submit the form',
+              },
+            },
+            {
+              title: 'Block duplicate emails',
+              description:
+                'Add one practical guardrail. People make mistakes, and duplicate signups make the organizer list harder to trust.',
+              promptTip:
+                'Before saving a signup, check whether the same email has already signed up for that event. Treat the same email as duplicate even if capitalization differs. If yes, show a friendly message and do not save another row.',
+              terms: {
+                'duplicate signup': 'a second RSVP from the same person for the same event',
+              },
+            },
+          ],
           ahaMoment: {
             front: 'When does this stop being a dashboard and become a real shared product?',
             back: 'The moment an action on one page changes what someone sees on another page. An attendee submits a form from a phone, the database saves it, and the organizer dashboard shows it later. That loop is the product. If the data does not flow all the way through, the screens may look finished but the app is not actually working yet.',
@@ -994,23 +1134,54 @@ export const challenges: Challenge[] = [
         {
           title: 'Session 6: Polish and Test',
           description:
-            'Shared apps fail in the gaps between screens, so test the whole path. Create an event as the organizer, copy the public link, open it like an attendee, submit a signup, then return to the dashboard and check that it appears in the right place. Test the public page on a phone-sized screen because most people will open signup links from messages.',
-          promptTip:
-            'Polish this app for real use. Make the organizer dashboard easy to scan, make the public signup page phone-friendly, add helpful messages for missing name or email, and make the confirmation screen clear. Test the full flow from creating an event to submitting an RSVP to seeing it on the dashboard, then prepare it for publishing.',
-          terms: {
-            'full flow': 'the complete path a real user takes from start to finish',
-          },
+            'Shared apps fail in the gaps between screens, so finish by testing the full path. Polish one surface at a time, then publish after the organizer and attendee flows both work.',
+          miniSteps: [
+            {
+              title: 'Validate required fields',
+              description:
+                'Catch empty submissions before polishing the design. A signup app needs trustworthy data.',
+              promptTip:
+                'If name or email is empty, show a friendly message and do not submit the RSVP.',
+            },
+            {
+              title: 'Test the full loop',
+              description:
+                'Create one realistic event, copy its public link, open the link in a second tab, submit an RSVP, and return to the dashboard. The signup should appear under the right event. If it does not, stop and fix the data connection before polishing or publishing.',
+              terms: {
+                'full loop': 'the complete path from organizer event creation to attendee RSVP to dashboard confirmation',
+              },
+            },
+            {
+              title: 'Polish the public page',
+              description:
+                'Most attendees will open the signup link from a message on their phone. Make that page easy to read and tap.',
+              promptTip:
+                'Polish only the public signup page for phone use. Stack content cleanly, keep form fields large enough to tap, and make event details easy to scan.',
+            },
+            {
+              title: 'Polish the dashboard',
+              description:
+                'Now clean up the organizer side. The dashboard should help someone scan events and attendee lists quickly.',
+              promptTip:
+                'Polish only the organizer dashboard. Make event cards easy to scan and attendee lists readable.',
+            },
+            {
+              title: 'Publish it',
+              description:
+                'After the full loop works, click the Publish button in Lovable. Save the live URL and test one public signup link from your phone.',
+            },
+          ],
         },
       ],
       tips: [
+        'Use Plan mode only for decisions because it still uses credits; once the build order is clear, approve the plan and move into Agent mode.',
         'Test with two browser tabs: one for the organizer dashboard and one for the public signup page.',
         'Use real event examples while building, like robotics tryouts or a club fundraiser, so the forms and dashboard feel realistic.',
         'Keep the public signup page short. Attendees are more likely to finish if the form asks only for what the organizer actually needs.',
-        'Do not add accounts until this version works. Shared data is already the main lesson.',
-        'Ask Lovable for QR codes, capacity limits, waitlists, or CSV export only after the core signup loop is working.',
+        'The organizer passcode is a prototype shortcut, not real security, so do not collect sensitive information with this version.',
       ],
       checklist: [
-        'You can create more than one event from the organizer dashboard',
+        'You can create and edit more than one event from the organizer dashboard',
         'Each event has its own public signup link',
         'An attendee can RSVP from the public page without creating an account',
         'The signup appears under the correct event in the organizer dashboard',

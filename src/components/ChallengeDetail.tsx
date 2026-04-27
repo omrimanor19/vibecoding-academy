@@ -13,6 +13,35 @@ interface ChallengeDetailProps {
   onBack: () => void;
 }
 
+function TermList({ terms }: { terms?: Record<string, string> }) {
+  if (!terms || Object.keys(terms).length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="mt-3 flex flex-wrap gap-2">
+      {Object.entries(terms).map(([term, definition]) => (
+        <TermChip key={term} term={term} definition={definition} />
+      ))}
+    </div>
+  );
+}
+
+function PromptExtras({
+  promptTip,
+  terms,
+}: {
+  promptTip?: string;
+  terms?: Record<string, string>;
+}) {
+  return (
+    <>
+      {promptTip && <PromptTip text={promptTip} />}
+      <TermList terms={terms} />
+    </>
+  );
+}
+
 export function ChallengeDetail({ challenge, onBack }: ChallengeDetailProps) {
   if (!challenge.detail) {
     return null;
@@ -96,13 +125,26 @@ export function ChallengeDetail({ challenge, onBack }: ChallengeDetailProps) {
                 <div key={step.title} className="surface-card surface-card-muted">
                   <h3 className="mb-2 text-lg font-bold text-slate-900">{step.title}</h3>
                   <p className="mb-3 text-slate-700">{step.description}</p>
-                  {step.promptTip && <PromptTip text={step.promptTip} />}
-                  {step.terms && Object.keys(step.terms).length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {Object.entries(step.terms).map(([term, definition]) => (
-                        <TermChip key={term} term={term} definition={definition} />
+                  <PromptExtras promptTip={step.promptTip} terms={step.terms} />
+                  {step.miniSteps && step.miniSteps.length > 0 && (
+                    <ol className="mt-6 space-y-5">
+                      {step.miniSteps.map((miniStep, index) => (
+                        <li key={miniStep.title} className="border-l border-slate-200 pl-4">
+                          <div className="mb-2 flex items-center gap-2">
+                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white text-xs font-bold text-sky-700 ring-1 ring-sky-200">
+                              {index + 1}
+                            </span>
+                            <h4 className="text-sm font-bold text-slate-900">
+                              {miniStep.title}
+                            </h4>
+                          </div>
+                          <p className="mb-3 text-sm leading-6 text-slate-700">
+                            {miniStep.description}
+                          </p>
+                          <PromptExtras promptTip={miniStep.promptTip} terms={miniStep.terms} />
+                        </li>
                       ))}
-                    </div>
+                    </ol>
                   )}
                   {step.ahaMoment && (
                     <div className="mt-6">

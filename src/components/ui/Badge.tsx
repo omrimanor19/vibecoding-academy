@@ -4,14 +4,15 @@ import { cn } from '../../lib/cn';
 interface BadgeProps {
   children: ReactNode;
   className?: string;
-  tone?: 'beginner' | 'intermediate' | 'advanced' | 'featured';
+  tone?: 'beginner' | 'intermediate' | 'advanced' | 'comingSoon' | 'spotlight';
 }
 
 const toneClassNames = {
   beginner: 'ui-badge ui-badge-beginner',
   intermediate: 'ui-badge ui-badge-intermediate',
   advanced: 'ui-badge ui-badge-advanced',
-  featured: 'ui-badge ui-badge-featured',
+  comingSoon: 'ui-badge ui-badge-coming-soon',
+  spotlight: 'ui-badge ui-badge-spotlight',
 };
 
 export function Badge({

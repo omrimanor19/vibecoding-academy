@@ -73,7 +73,7 @@ Level 3 / purple badge / "Serious Build":
 Only "My Landing Page" gets a "Start Challenge" button. All others say "Coming Soon" and are visually dimmed.
 
 ABOUT:
-"Created by Omri, a high school sophomore who believes every student should know how to build with AI. This platform is itself built using vibe coding -- the same tools and techniques taught in the challenges."
+"Created by Omri, a high school sophomore who believes every student should know how to build with AI."
 
 FOOTER:
 Left: "Built with AI by Omri" / Right: "More challenges coming soon"

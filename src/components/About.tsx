@@ -8,8 +8,7 @@ export function About() {
 
         <p className="section-copy">
           Created by Omri, a high school sophomore who believes every student should know how to
-          build with AI. This platform is itself built using vibe coding, the same tools and
-          techniques taught in the challenges.
+          build with AI.
         </p>
 
         <div className="text-5xl">💻✨</div>

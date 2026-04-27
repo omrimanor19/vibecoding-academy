@@ -27,6 +27,8 @@ The challenge will use a lightweight organizer access model.
 
 The organizer gets into the dashboard with an admin link or simple passcode. Attendees do not log in. They open a public event signup link, read the event details, submit their RSVP, and see a confirmation.
 
+The passcode must be labeled as a prototype shortcut, not real security. Students should understand that this version is for learning shared data flows, not for collecting sensitive information or protecting real private records.
+
 The app manages multiple events. Each event has its own public signup link. Signups persist in a shared database and appear back in the organizer dashboard under the correct event.
 
 This challenge should not introduce full authentication. That belongs in a later full-product challenge because it brings identity, roles, invitations, and permission rules into scope.
@@ -46,6 +48,7 @@ This challenge is not mainly about event planning. It is about understanding tha
 The learner finishes with a multi-event signup app that:
 
 - lets an organizer create and manage events
+- lets an organizer edit basic event details
 - gives each event a public signup link
 - lets attendees RSVP without accounts
 - saves signups in a persistent database
@@ -63,7 +66,9 @@ The challenge should promise a real upgrade: a public signup link people can ope
 
 ### Setup
 
-Include Lovable setup plus a database setup step inside Lovable. The exact backend may depend on Lovable's current product flow, so the student-facing copy should explain the concept without over-prescribing implementation details.
+Do not include the beginner Lovable setup flow in this Level 3 challenge. At this point, the learner should already know how to open Lovable, sign in, and start a project.
+
+Keep the database setup guidance. The exact backend may depend on Lovable's current product flow, so the student-facing copy should explain the concept without over-prescribing implementation details.
 
 The setup intro should explain that this challenge needs more than browser memory. If an attendee submits from their phone, the organizer's laptop still needs to see that signup. That means the app needs shared storage.
 
@@ -79,7 +84,7 @@ Suggested back:
 
 ### Steps
 
-The challenge should use six sessions rendered through the existing step structure.
+The challenge should use six sessions. Each session should contain smaller mini steps so the learner gives Lovable one focused prompt at a time.
 
 #### Session 1: Plan the App
 
@@ -93,6 +98,7 @@ Content:
 - event data
 - signup data
 - simple organizer access model
+- Lovable Plan mode before Agent mode
 
 Why:
 Students should understand the product map before asking Lovable to build a multi-screen app.
@@ -108,6 +114,7 @@ Content:
 - fields for title, date, time, location, description, and optional question
 - placeholder signup list area
 - signup count per event
+- prototype passcode labeled as not real security
 
 Why:
 The organizer view defines what data the app needs to manage.
@@ -122,6 +129,7 @@ Content:
 - event fields: title, date, time, location, description, status
 - signup fields: event ID, name, email, optional answer, created time
 - every signup belongs to one event
+- edit event details after real events load
 
 Why:
 This is the learning moment where students see that data relationships power the whole app.
@@ -136,7 +144,6 @@ Content:
 - organizer can copy a public signup link
 - attendee page shows event details
 - attendee form asks for name, email, and optional note or custom answer
-- confirmation screen appears after submission
 
 Why:
 Students learn that one app can show a different screen based on which link someone opens.
@@ -148,6 +155,7 @@ Make the attendee flow and organizer flow meet in the database.
 
 Content:
 - submitted RSVP saves as a signup connected to the event ID
+- confirmation screen appears only after the RSVP saves successfully
 - dashboard shows signups grouped under the correct event
 - signup counts update
 - organizer can close signups
@@ -178,9 +186,13 @@ Shared apps fail in the gaps between screens. The student should learn to test t
 - Keep the language student-facing and practical.
 - Use `Shared Data` as the core idea.
 - Explain `database`, `public link`, `event ID`, and `duplicate signup` with term chips or inline definitions.
-- Use `Session N` titles to make the multi-session nature clear while staying inside the existing renderer.
+- Use `Session N` titles to make the multi-session nature clear.
+- Use mini steps inside each session so prompts stay narrow and Lovable does not try to build too much at once.
+- Use Lovable's current flow: Plan mode for planning, then approve the plan so Lovable switches into Agent mode for code edits.
+- Mention that Plan mode still uses credits, so planning prompts should stay focused.
 - Prompt tips should be in first person.
 - Do not include full login accounts, role-based permissions, admin invites, member dashboards, notifications, payments, or club membership.
+- If a demo passcode appears in the core flow, label it clearly as not real security.
 - QR codes, capacity, waitlists, CSV export, confirmation email, and custom questions can appear as stretch ideas or tips, but not as core steps.
 
 ## Stretch Ideas
@@ -214,6 +226,7 @@ The final challenge content is ready when:
 
 - Scope creep into full Club Manager behavior
 - Accidentally adding accounts, roles, invites, or permissions
+- Presenting a demo passcode as real security
 - Treating the database as an implementation detail instead of the main learning point
 - Making QR codes, capacity, or emails core before the basic signup loop works
 - Forgetting to test the public page and organizer dashboard as separate experiences
@@ -223,4 +236,4 @@ The final challenge content is ready when:
 
 This challenge should be implemented as content in `src/data/challenges.ts`.
 
-No component changes are expected. The existing challenge detail renderer can handle a multi-session challenge by using step titles like `Session 1: Plan the App`.
+The challenge detail renderer should support optional `miniSteps` inside a session so advanced challenges can show one visible session with multiple focused Lovable prompts.

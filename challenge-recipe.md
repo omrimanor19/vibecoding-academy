@@ -27,7 +27,7 @@ Every challenge lives in `src/data/challenges.ts`. A challenge with a full detai
   coreIdea: string;         // short learning concept label. e.g. 'APIs'
   coreIdeaBlurb: string;    // one-sentence explanation of what the learner should understand by the end
   available: boolean;       // set to true when the detail page is ready
-  featured?: boolean;       // highlights the card on the grid
+  spotlightLabel?: string;  // optional card badge for useful guidance, e.g. 'Start here'
   detail?: ChallengeDetailContent;
 }
 ```
@@ -80,9 +80,9 @@ A concrete description of the finished product. One or two sentences. Be specifi
 
 ### 3. `setup` (optional, but required for any challenge that introduces a new tool or concept)
 
-Use this section when the learner needs to set something up or learn how a tool works before they can start building. For Lovable challenges, always include this.
+Use this section when the learner needs to set something up or learn how a tool works before they can start building. For Level 1 Lovable challenges, include the basic Lovable start guide. For Level 3 challenges, do not repeat the Lovable sign-in or new-project instructions unless the challenge introduces a new workflow the learner has not seen before.
 
-**`setup.intro`:** One or two sentences that explain what the tool is, in plain English. Anchor it to something they already know. "Lovable is like ChatGPT, except instead of answering in text, it builds a real website as you talk to it" works because it uses ChatGPT as a reference point most students have.
+**`setup.intro`:** One or two sentences that explain the setup concept, in plain English. For early challenges, this may explain the tool. For advanced challenges, it should usually explain the new project-specific idea, like shared storage, an API key, or a database.
 
 **`setup.steps`:** An ordered list of setup instructions. Each step has:
 - `instruction`: what to do. One action per step. Short sentences.
@@ -125,6 +125,20 @@ When writing prompt tips:
 - Write them in first person, as if the learner is typing them.
 - Use plain English, not developer language. "Make the page look modern and clean" not "apply a CSS stylesheet."
 - Keep them short and focused. One prompt per step. If a prompt is doing more than one thing, it belongs in two steps.
+
+**`miniSteps`** (optional): Use this for advanced or multi-session challenges where one visible session needs several smaller actions. A parent step can explain the session goal, then `miniSteps` can hold the copyable prompts.
+
+Each mini step can have:
+- `title`: the small action
+- `description`: why this small action comes next
+- `promptTip` (optional): the exact Lovable prompt for this one action
+- `terms` (optional): term chips for this one action
+
+Rules for mini steps:
+- One mini step should ask Lovable for one thing.
+- Do not combine planning, UI, database, routing, validation, and polish in one prompt.
+- If Lovable would need to make three unrelated decisions from one prompt, split it into smaller mini steps.
+- For Level 3 challenges, prefer session-level steps with mini steps over one giant prompt per session.
 
 **`terms`** (optional): A key-value map of technical terms used in this step and their plain-English definitions. Renders as small pill chips below the prompt tip.
 

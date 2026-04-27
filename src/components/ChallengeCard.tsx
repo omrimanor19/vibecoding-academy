@@ -9,17 +9,17 @@ interface ChallengeCardProps {
 }
 
 export function ChallengeCard({ challenge, onStartClick }: ChallengeCardProps) {
+  const hasSpotlight = challenge.available && Boolean(challenge.spotlightLabel);
+
   const content = (
     <>
-      {challenge.featured && challenge.available ? (
-        <Badge tone="featured" className="absolute -right-2 -top-2 shadow-lg">
-          Featured
-        </Badge>
-      ) : null}
-
       <div className="mb-3 flex items-start justify-between gap-3">
-        <Badge tone={challenge.level}>{challenge.levelLabel}</Badge>
-        <span className="text-sm font-medium text-slate-500">{challenge.time}</span>
+        <div className="flex flex-wrap gap-2">
+          {hasSpotlight ? <Badge tone="spotlight">{challenge.spotlightLabel}</Badge> : null}
+          <Badge tone={challenge.level}>{challenge.levelLabel}</Badge>
+          {!challenge.available ? <Badge tone="comingSoon">Coming soon</Badge> : null}
+        </div>
+        <span className="shrink-0 text-sm font-medium text-slate-500">{challenge.time}</span>
       </div>
 
       <h3 className="mb-2 text-lg font-bold text-slate-900">{challenge.title}</h3>
@@ -55,7 +55,10 @@ export function ChallengeCard({ challenge, onStartClick }: ChallengeCardProps) {
   return (
     <button
       type="button"
-      className="surface-card surface-card-interactive relative text-left"
+      className={cn(
+        'surface-card surface-card-interactive relative text-left',
+        hasSpotlight && 'ring-2 ring-amber-300 ring-offset-2 ring-offset-white'
+      )}
       onClick={() => onStartClick(challenge.id)}
     >
       <div className="card-highlight" aria-hidden="true" />

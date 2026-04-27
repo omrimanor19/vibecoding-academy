@@ -1,4 +1,7 @@
-import { useState, useEffect } from 'react';
+import type { FormEvent } from 'react';
+import { useEffect, useState } from 'react';
+import { Button } from './ui/Button';
+import { TextInput } from './ui/TextInput';
 
 interface Submission {
   id: string;
@@ -38,17 +41,32 @@ export function ShowAndTell({ challengeId }: ShowAndTellProps) {
     save(challengeId, submissions);
   }, [challengeId, submissions]);
 
-  function handleSubmit(e: React.FormEvent) {
+  function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const trimmedUrl = url.trim();
     const trimmedName = name.trim();
-    if (!trimmedName) { setError('Add your name so people know whose project this is.'); return; }
-    if (!trimmedUrl) { setError('Paste your project URL to share it.'); return; }
-    if (!/^https?:\/\/.+/.test(trimmedUrl)) { setError('URL should start with https://'); return; }
+    if (!trimmedName) {
+      setError('Add your name so people know whose project this is.');
+      return;
+    }
+    if (!trimmedUrl) {
+      setError('Paste your project URL to share it.');
+      return;
+    }
+    if (!/^https?:\/\/.+/.test(trimmedUrl)) {
+      setError('URL should start with https://');
+      return;
+    }
 
     setSubmissions((prev) => [
       ...prev,
-      { id: crypto.randomUUID(), name: trimmedName, url: trimmedUrl, likes: 0, likedByMe: false },
+      {
+        id: crypto.randomUUID(),
+        name: trimmedName,
+        url: trimmedUrl,
+        likes: 0,
+        likedByMe: false,
+      },
     ]);
     setName('');
     setUrl('');
@@ -72,34 +90,29 @@ export function ShowAndTell({ challengeId }: ShowAndTellProps) {
         Built something? Share your link here and check out what others made.
       </p>
 
-      {/* Submit form */}
-      <form onSubmit={handleSubmit} className="mb-8 rounded-2xl border border-slate-200 bg-slate-50 p-5">
+      <form
+        onSubmit={handleSubmit}
+        className="mb-8 rounded-2xl border border-slate-200 bg-slate-50 p-5"
+      >
         <div className="flex flex-col gap-3 sm:flex-row">
-          <input
-            type="text"
+          <TextInput
             placeholder="Your name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:border-sky-400 focus:outline-none sm:w-40 shrink-0"
+            className="shrink-0 sm:w-40"
           />
-          <input
-            type="text"
+          <TextInput
             placeholder="https://your-project.vercel.app"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:border-sky-400 focus:outline-none"
           />
-          <button
-            type="submit"
-            className="shrink-0 rounded-xl bg-sky-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-sky-600 transition-colors"
-          >
+          <Button type="submit" className="shrink-0">
             Share it
-          </button>
+          </Button>
         </div>
         {error && <p className="mt-2 text-xs text-red-500">{error}</p>}
       </form>
 
-      {/* Submissions */}
       {submissions.length === 0 ? (
         <p className="text-sm text-slate-400">No projects shared yet. Be the first.</p>
       ) : (
