@@ -1202,8 +1202,329 @@ export const challenges: Challenge[] = [
     description: 'Members, events, signups for school clubs',
     coreIdea: 'Systems Thinking',
     coreIdeaBlurb:
-      'Learn how real products connect multiple features that each do one job but work together as one system.',
-    available: false,
+      'Learn how real apps connect roles, shared data, and multiple workflows so each part of the product affects the others.',
+    available: true,
+    detail: {
+      summary:
+        "Running a school club means juggling members, events, signups, and announcements, usually across a pile of group chats and a spreadsheet nobody keeps updated. In this challenge you will build one app that holds it all together. Club managers get a private dashboard to run the club. Members log in from their own phones to see what is happening and sign up for events. The same shared database powers both sides. By the end you will have a real product a club, team, or student group could actually run on.",
+      outcome:
+        'You are building a two-role app for one school club. A club manager signs up, starts a club, and lands in a manager dashboard where they create events, post announcements, and see who has joined. They share an invite link, and anyone who opens it can sign up and join as a member. Members get their own view: upcoming events they can sign up for, announcements, and recent updates. The key idea is that one person is a manager or member of a specific club, and the app shows each person the right view based on that role.',
+      setup: {
+        intro:
+          "This is the most complex build on the platform, so the most important setup is a mindset, not a tool. You are not building one screen. You are building a system where the same data shows up differently for different people. Before you prompt, understand the two new ideas this project needs: real accounts so people can log in from their own devices, and roles so the app knows whether someone is a club manager or a member. Lovable can handle both, usually with Supabase for login and shared data.",
+        steps: [
+          {
+            instruction:
+              'When Lovable asks whether you want to connect a backend, database, or Supabase, choose the option that adds login accounts and shared data.',
+            note: 'Lovable changes its exact labels sometimes. The important idea is that this project needs real accounts and a shared database, not browser-only memory.',
+          },
+          {
+            instruction:
+              'Plan to test with two accounts from the start: one club manager and one member. The whole point of this app is that the two roles see different things.',
+            note: 'A second browser or an incognito window makes it easy to be logged in as two different people at once.',
+          },
+        ],
+        ahaMoment: {
+          front:
+            'What actually makes something a real product instead of just a nice screen?',
+          back: "A real product is a system. The same club, the same events, and the same signups power two completely different experiences. A manager creates an event, and a member sees it appear on their phone. A member signs up, and the manager sees their name on the list. Nobody built two separate apps. They built one shared system where every part affects the others. Once you can think this way, you can build almost any app people actually use together.",
+        },
+      },
+      steps: [
+        {
+          title: 'Session 1: Plan the System',
+          description:
+            'This build is too big for one prompt, so start by planning. You are teaching Lovable the shape of the product before it writes any screens: the two roles, the shared data, and the order to build things in. Do this whole session in Plan mode so you spend credits on thinking, not on code you will redo.',
+          miniSteps: [
+            {
+              title: 'Describe the product',
+              description:
+                'Switch Lovable to Plan mode before you paste this. Plan mode lets you talk through the app before Lovable edits code. It still uses credits, so keep the planning prompts focused.',
+              promptTip:
+                'I want to build a Club Manager app for one school club. It has two kinds of users: club managers who run the club, and members who join it. Help me plan the app before we build. What screens, data, and build order do we need?',
+              terms: {
+                role: 'a label like club manager or member that decides what a person can see and do in the app',
+                dashboard: 'a private control screen where a club manager runs the club',
+                database: 'shared storage where the app saves information so different people and devices can see it later',
+                'Plan mode': "Lovable's planning space for reviewing an approach before Agent mode edits the app",
+              },
+            },
+            {
+              title: 'Set the role rules',
+              description:
+                'Now lock in the most important rule of the whole app: roles belong to a specific club, and a random person cannot make themselves a manager of a club that already exists. This is what keeps a club safe from strangers giving themselves control.',
+              promptTip:
+                'Set these role rules. A person becomes a club manager only by starting a new club themselves, or by being invited as a manager by an existing manager. Everyone who joins from a normal invite link is a member. A member cannot see or use manager controls. Roles apply to a specific club, not the whole app.',
+              terms: {
+                permission: 'a rule about what a certain role is allowed to do, like only managers can create events',
+              },
+            },
+            {
+              title: 'List the data',
+              description:
+                'Before any screens, make Lovable name the information the app has to remember. This is the backbone of the system. Ask for a short list and make sure memberships are in it, because that is the piece that connects a person to a club with a role.',
+              promptTip:
+                'List the minimum data this app needs. I expect something like: users (login accounts), clubs (name and description), memberships (which user belongs to which club and their role), events (created by managers), signups (which member is going to which event), and announcements (posts from managers). Return it as short lists.',
+              terms: {
+                membership: 'a record that connects one user to one club and stores whether they are a manager or a member there',
+              },
+            },
+            {
+              title: 'Choose the build order',
+              description:
+                'End planning by turning the product into a sequence. Building in the right order means each session has something real to stand on before the next one starts.',
+              promptTip:
+                'Turn this into a build order. Start with accounts and starting a club, then the manager dashboard, then member invites and the member view, then events and signups, then announcements and updates, then testing permissions.',
+            },
+          ],
+        },
+        {
+          title: 'Session 2: Accounts and Starting a Club',
+          description:
+            'Review the plan, and if it looks right, approve it so Lovable switches to Agent mode and can edit the app. This session builds the front door: people can create an account and log in, and a new manager can start a club. Getting accounts and the first role working correctly is what everything else depends on.',
+          miniSteps: [
+            {
+              title: 'Add login and signup',
+              description:
+                'Start with real accounts. Unlike earlier projects, this app needs people to come back later and be recognized, so it needs true login, not a passcode.',
+              promptTip:
+                'Add real user accounts with signup and login using email and password. After someone logs in, take them to a simple home screen for now. Keep it basic, we will build the real screens next.',
+              terms: {
+                authentication: 'the system that lets people create accounts, log in, and be recognized when they return',
+              },
+            },
+            {
+              title: 'Add the Start a Club flow',
+              description:
+                'Now add the only way someone becomes a manager during signup: they choose to start a new club. This creates the club and makes them its manager.',
+              promptTip:
+                'After login, if a person has not joined any club yet, show a Start a Club option. When they use it, ask for a club name and short description, create that club, and make that person the club manager of it.',
+            },
+            {
+              title: 'Save the membership with a role',
+              description:
+                'This is the systems-thinking step. Starting a club should not just create a club, it should create a membership that says this user is a manager of this specific club. That record is what the whole app reads to decide what to show.',
+              promptTip:
+                'When someone starts a club, create a membership record that links that user to that club with the role of club manager. The app should use this membership to decide what each person can see.',
+            },
+            {
+              title: 'Send people to the right view',
+              description:
+                'Close the session by making the app route people by role. A manager should land in a manager view, a member in a member view. The screens can be nearly empty for now, you are proving the routing works.',
+              promptTip:
+                'After login, check the person\'s membership. If they are a club manager, send them to a manager dashboard page. If they are a member, send them to a member home page. For now each page can just show its name and the club name.',
+              terms: {
+                'role-based view': 'showing a different screen or different controls to a person based on their role',
+              },
+            },
+          ],
+        },
+        {
+          title: 'Session 3: Build the Manager Dashboard',
+          description:
+            'Now build out the club manager side, the private control center for running the club. Keep this session focused on the dashboard shell and the members list. Events and announcements come in later sessions so each build stays small.',
+          miniSteps: [
+            {
+              title: 'Build the dashboard layout',
+              description:
+                'Ask for the manager dashboard structure only. You want the sections in place before filling them with real behavior.',
+              promptTip:
+                'Build the club manager dashboard layout. Show the club name at the top, and sections for Members, Events, and Announcements. Use placeholder content in each section for now.',
+              terms: {
+                placeholder: 'temporary sample content that shows where real data will appear later',
+              },
+            },
+            {
+              title: 'Show the members list',
+              description:
+                'Make the Members section real by loading the people who belong to this club from their memberships. Right now it may just be the manager, and that is fine.',
+              promptTip:
+                'In the Members section, load and show everyone who has a membership in this club, along with their role. Read this from the memberships data.',
+            },
+            {
+              title: 'Lock the dashboard to managers',
+              description:
+                'Add the guardrail that makes roles mean something. A member who somehow lands on the dashboard should not be able to use it. This is a rule you will test hard later.',
+              promptTip:
+                'Protect the manager dashboard so only a club manager of this club can open it. If a member or a logged-out person tries to reach it, send them away and show a friendly message that they do not have access.',
+            },
+          ],
+        },
+        {
+          title: 'Session 4: Invite and Join as a Member',
+          description:
+            'This session builds the bridge that lets other people into the club. A manager shares an invite link, and anyone who opens it can sign up and join as a member of that specific club. Build it in layers so each piece is easy to check.',
+          miniSteps: [
+            {
+              title: 'Create a member invite link',
+              description:
+                'Start on the manager side. The manager needs a shareable link tied to this exact club so the app knows which club a new person is joining.',
+              promptTip:
+                'On the manager dashboard, add a Create Invite Link button that generates a shareable link for this club, something like /join/:clubId. Add a Copy Link button and show a small copied message after it works.',
+              terms: {
+                'invite link': 'a shareable web address that lets someone join a specific club when they open it',
+              },
+            },
+            {
+              title: 'Build the join flow',
+              description:
+                'Now the member side. When someone opens the invite link, they should see the club, then sign up or log in, then get added to that club as a member.',
+              promptTip:
+                'Create a join page at /join/:clubId that shows the club name and description. When a visitor signs up or logs in from this page, create a membership that links them to this club with the role of member, then send them to the member home page.',
+            },
+            {
+              title: 'Build the member home view',
+              description:
+                'Give members a real home. It should read from the same shared data the manager writes to, showing the club and leaving room for events and announcements you add next.',
+              promptTip:
+                'Build the member home page for this club. Show the club name, a section for upcoming events, and a section for announcements. Use placeholder content for now, we will connect real data in the next sessions.',
+            },
+            {
+              title: 'Invite another manager',
+              description:
+                'Add the separate, more powerful invite: bringing on a co-manager. This must be its own kind of link so a normal member invite can never hand someone manager control.',
+              promptTip:
+                'Add a separate Invite Manager link on the dashboard that is different from the member invite. When someone joins through the manager invite, give them a membership with the role of club manager for this club. Keep this clearly separate from the member invite link.',
+            },
+          ],
+        },
+        {
+          title: 'Session 5: Events and Signups',
+          description:
+            'Now add the core activity of the club: events that managers create and members sign up for. This is where the two roles start affecting each other through shared data. Move one action at a time.',
+          miniSteps: [
+            {
+              title: 'Create events',
+              description:
+                'Start on the manager side. Let a manager create an event that saves to the shared database so members can see it.',
+              promptTip:
+                'In the Events section of the dashboard, let a club manager create an event with a title, date, time, location, and description. Save each event to the database and connect it to this club.',
+            },
+            {
+              title: 'Show events to members',
+              description:
+                'Now make the member home show real upcoming events for their club. This proves that a manager action appears on a member screen.',
+              promptTip:
+                'On the member home page, load and show the upcoming events for this club from the database, sorted by date.',
+            },
+            {
+              title: 'Let members sign up',
+              description:
+                'Add the signup action, and let members change their mind. Each signup connects one member to one event.',
+              promptTip:
+                'Let a member sign up for an event with one tap, which saves a signup that links that member to that event. Let them cancel their own signup too. Show clearly whether they are currently signed up.',
+              terms: {
+                signup: 'a record that connects one member to one event they plan to attend',
+              },
+            },
+            {
+              title: 'Show signups to the manager',
+              description:
+                'Close the loop by letting the manager see who is coming. The manager reads the same signups the members created.',
+              promptTip:
+                'On the manager dashboard, for each event show a signup count and a list of the members who signed up, read from the signups data for that event.',
+            },
+            {
+              title: 'Edit and cancel events',
+              description:
+                'Give managers control over events after creating them. Cancelled events should stay visible so members are not confused, just clearly marked.',
+              promptTip:
+                'Let a club manager edit an event or cancel it. A cancelled event should still be visible to members but clearly marked as cancelled, and members should not be able to sign up for it.',
+            },
+          ],
+        },
+        {
+          title: 'Session 6: Announcements and Updates',
+          description:
+            'Add the last piece of the system: managers posting news, and members seeing it. Keep notifications in-app for this build, meaning updates that appear inside the app, not real emails or texts.',
+          miniSteps: [
+            {
+              title: 'Post announcements',
+              description:
+                'Let a manager write a short announcement that saves to the shared database for this club.',
+              promptTip:
+                'In the Announcements section of the dashboard, let a club manager post an announcement with a title and message. Save it to the database connected to this club.',
+            },
+            {
+              title: 'Show announcements to members',
+              description:
+                'Make announcements appear on the member side, newest first, so members actually see club news.',
+              promptTip:
+                'On the member home page, load and show this club\'s announcements, newest first.',
+            },
+            {
+              title: 'Add in-app updates',
+              description:
+                'Add a simple recent-updates feed so members notice what changed: a new announcement, a new event, or a cancelled event. This is what makes the app feel alive without any email setup.',
+              promptTip:
+                'On the member home page, add a Recent Updates area that shows the latest club activity, like new announcements, new events, and cancelled events. Keep it in-app only, no real emails or texts.',
+              terms: {
+                'in-app notification': 'an update shown inside the app itself, instead of an email, text, or push notification',
+              },
+            },
+          ],
+          ahaMoment: {
+            front: 'Why does one small feature, like an announcement, touch so many parts of the app?',
+            back: 'Because in a real product the parts are connected. An announcement is created by a manager, saved to the shared database, shown on every member home page, and surfaced again in recent updates. One action ripples across roles and screens. That is systems thinking. You stop building isolated pages and start building a web of data where each piece has effects somewhere else.',
+          },
+        },
+        {
+          title: 'Session 7: Test Permissions and Polish',
+          description:
+            'This app lives or dies on its roles, so the most important testing is making sure members cannot do manager things. Test with two accounts, fix any permission gaps, then polish and publish.',
+          miniSteps: [
+            {
+              title: 'Test with two accounts',
+              description:
+                'Log in as a manager in one browser and a member in another. Walk the full loop: the manager creates an event and posts an announcement, and the member sees both, signs up, and the manager sees the signup. If any step does not flow through, fix the data connection before polishing.',
+              terms: {
+                'full loop': 'the complete path from a manager action to a member seeing it and responding, and back to the manager',
+              },
+            },
+            {
+              title: 'Check the permission walls',
+              description:
+                'Now try to break your own rules as the member. A member should never reach the dashboard, create an event, or post an announcement. If they can, that is the most important bug to fix.',
+              promptTip:
+                'Double-check that a member cannot open the manager dashboard, create or edit events, post announcements, or see manager-only controls. Fix any place where a member can reach something they should not.',
+            },
+            {
+              title: 'Polish the member view',
+              description:
+                'Most members will open this on a phone, so make their side clean and easy to scan and tap.',
+              promptTip:
+                'Polish the member home page for phone use. Make events, announcements, and updates easy to read and tap, and keep the layout clean on small screens.',
+            },
+            {
+              title: 'Polish the dashboard and publish',
+              description:
+                'Clean up the manager side so it is fast to scan, then ship it. After the full loop works with two accounts, publish and save your live link.',
+              promptTip:
+                'Polish the manager dashboard so events, members, and announcements are easy to scan. Then I will publish.',
+            },
+          ],
+        },
+      ],
+      tips: [
+        'Always test with two accounts, one club manager and one member, in two browsers or an incognito window. This app is about roles, and you cannot see roles working with a single account.',
+        'Use Plan mode for decisions, not for building. Once the build order is clear, approve the plan and switch to Agent mode so you stop spending credits on planning.',
+        'Build one role action at a time. Manager creates, then member sees, then member responds, then manager sees the response. If you skip a step, it gets hard to tell where the data stopped flowing.',
+        'The most important bug to hunt is a member being able to do a manager thing. Try to break your own permission rules on purpose before you publish.',
+        'Once the core works, the natural stretch is a QR code for your member invite link, so people can scan to join a club at a meeting or club fair. Add it only after invite links work end to end.',
+        'Use a real club while you build, like a robotics team or a debate club, so the events, members, and announcements feel real instead of abstract.',
+      ],
+      checklist: [
+        'A new person can sign up, start a club, and become its club manager',
+        'A manager can share an invite link, and someone who opens it joins as a member',
+        'Managers and members each see their own view, and members cannot reach manager controls',
+        'A manager can create events and announcements, and members see them appear',
+        'A member can sign up for an event, and the manager sees that signup',
+        'You tested the full loop with two accounts and published a live URL',
+      ],
+      closingTitle: 'You built a real system.',
+      closingMessage:
+        'This is not one page, it is a product. One shared database now powers a manager dashboard and a member experience, with roles deciding who sees what. That is how the apps you use with other people actually work, and now you know how to build one.',
+    },
   },
   {
     id: 'debate-prep',

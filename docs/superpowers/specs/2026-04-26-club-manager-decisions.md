@@ -3,7 +3,7 @@
 Date: 2026-04-26
 Challenge: `club-manager`
 Level: `full product`
-Status: decision memo, not final implementation plan
+Status: built as a Level 3 content challenge on 2026-07-04. See resolved open questions below.
 
 ## Purpose
 
@@ -252,12 +252,12 @@ Repo implementation complexity: low to medium if this stays content-only.
 
 The current site can render a long challenge detail page from `src/data/challenges.ts`, so adding the challenge as content is straightforward. The complexity rises to medium if we want better Level 3 support in the Vibe Coding Academy site, such as explicit session sections, stretch goals, or separate admin/member flow diagrams. The current data model does not have dedicated fields for sessions or stretch ideas.
 
-## Open Questions
+## Open Questions (Resolved 2026-07-04)
 
-- Should QR codes be core or stretch?
-- Should the member invite require an invite code, an invite link, or both?
-- Should the first admin be forced through a "Start a club" flow immediately after signup?
-- Should admins be called admins, officers, or club managers in student-facing copy?
-- Should cancelled events remain visible as cancelled, or disappear from the member view?
-- How much database terminology should the recipe expose versus hide behind Lovable prompts?
-- What Level 3 challenge should bridge from single-user apps into shared-product thinking before Club Manager?
+- QR codes core or stretch? **Stretch.** Invite links are core; QR is an optional extension mentioned in tips.
+- Member invite code, link, or both? **Invite link only** for the core recipe.
+- Force the first manager through a "Start a club" flow after signup? **Yes.** If a logged-in person has no membership, the app shows Start a Club, and starting one makes them the manager.
+- Admins called admins, officers, or club managers? **Club managers** throughout the student-facing copy.
+- Cancelled events visible or hidden? **Visible but clearly marked as cancelled**, and members cannot sign up for them.
+- How much database terminology to expose? **Hidden behind Lovable prompts.** The recipe names concepts like membership, signup, and in-app notification in plain terms, but the student never writes schema directly.
+- What Level 3 bridge should come before Club Manager? **Event Signup Manager** (shared data, one admin flow, one public flow) now fills that role. Club Manager is placed in Level 3 as the top Serious Build rather than in a new Level 4 tier, to avoid adding level infrastructure to the site for now.
