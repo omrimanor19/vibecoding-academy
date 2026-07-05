@@ -15,7 +15,7 @@ export function Hero({ onCTAClick }: HeroProps) {
 
       <Container narrow className="relative z-10 text-center">
         <h1 className="text-balance text-5xl font-bold leading-tight text-white sm:text-6xl md:text-7xl">
-          Build real apps.
+          Build real Apps.
           <br />
           <span className="bg-gradient-to-r from-cyan-400 via-sky-400 to-violet-400 bg-clip-text text-transparent">
             No code required.
